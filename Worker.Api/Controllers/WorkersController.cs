@@ -12,10 +12,12 @@ namespace Worker.Api.Controllers
     public class WorkersController : ControllerBase
     {
         private readonly WorkerDbContext dbContext;
+        private readonly WorkerProfileFinder workerFinder;
 
-        public WorkersController(WorkerDbContext dbContext)
+        public WorkersController(WorkerDbContext dbContext, WorkerProfileFinder workerFinder)
         {
             this.dbContext = dbContext;
+            this.workerFinder = workerFinder;
         }
 
         [HttpGet]
@@ -35,6 +37,18 @@ namespace Worker.Api.Controllers
                 .Include(x => x.Address)
                 .Include(x => x.Skills)
                 .First(x => x.WorkerProfileId == id);
+        }
+
+        [HttpGet("{skills}")]
+        public IEnumerable<WorkerProfile> Get(IList<Skill> skills)
+        {
+            return workerFinder.FindBySkills(skills);
+        }
+
+        [HttpGet("{skills}")] // TODO: Jak przysłać tu adres? Bo raczej nie Getem.
+        public IEnumerable<WorkerProfile> Get(double radiusInKilometers, Address address)
+        {
+            return workerFinder.FindInRadiusOfAddress(radiusInKilometers, address);
         }
 
         [HttpPost]
