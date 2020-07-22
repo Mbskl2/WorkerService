@@ -27,11 +27,5 @@
     <ProjectReference Include="..\Worker.DAL\Worker.DAL.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="blogging.db">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 
 </Project>

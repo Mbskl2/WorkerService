@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Worker.DAL;
 using Worker.DAL.Models;
 
 namespace Worker.Api.Controllers
@@ -8,46 +11,46 @@ namespace Worker.Api.Controllers
     [ApiController]
     public class WorkersController : ControllerBase
     {
+        private readonly WorkerDbContext dbContext;
+
+        public WorkersController(WorkerDbContext dbContext)
+        {
+            this.dbContext = dbContext;
+        }
+
         [HttpGet]
         public IEnumerable<WorkerProfile> Get()
         {
-            return new WorkerProfile[]
-            {
-                new WorkerProfile()
-                {
-                    Address = new Address()
-                    {
-                        City = "Wrocław", Country = "PL", FlatNumber = "22", HouseNumber = "13a", Id = 1, Street = "Kasprowicza"
-                    },
-                    Id = 1,
-                    Name = "Janek.Kos"
-                },
-                new WorkerProfile()
-                {
-                    Address = new Address()
-                    {
-                        City = "Warszawa", Country = "PL", FlatNumber = "3", HouseNumber = "1", Id = 2, Street = "ul. Adama Mickiewicza"
-                    },
-                    Id = 2,
-                    Name = "Justyna.Szumowska"
-                },
-            };
+            return dbContext.WorkerProfiles 
+                .Include(x => x.Address) // TODO: Może include można zapisać ładniej w tej drugiej notacji?
+                .Include(x => x.Skills);
         }
 
         [HttpGet("{id}")]
         public WorkerProfile Get(int id)
         {
-            return new WorkerProfile();
+            // TODO: Czy powinienem to zrobić async?
+            // TODO: Co robić z błędami?
+            return dbContext.WorkerProfiles
+                .Include(x => x.Address)
+                .Include(x => x.Skills)
+                .First(x => x.WorkerProfileId == id);
         }
 
         [HttpPost]
-        public void Post([FromBody] WorkerProfile value)
+        public void Post([FromBody] WorkerProfile worker)
         {
+            worker.WorkerProfileId = 0;
+            dbContext.WorkerProfiles.Add(worker);
+            dbContext.SaveChanges();
         }
 
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] WorkerProfile value)
+        public void Put(int id, [FromBody] WorkerProfile worker)
         {
+            worker.WorkerProfileId = id;
+            dbContext.WorkerProfiles.Update(worker);
+            dbContext.SaveChanges();
         }
     }
 }
