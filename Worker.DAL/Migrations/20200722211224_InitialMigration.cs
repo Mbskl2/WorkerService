@@ -24,19 +24,6 @@ namespace Worker.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Skills",
-                columns: table => new
-                {
-                    SkillId = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Skills", x => x.SkillId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "WorkerProfiles",
                 columns: table => new
                 {
@@ -57,53 +44,38 @@ namespace Worker.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "WorkerSkills",
+                name: "Skills",
                 columns: table => new
                 {
-                    WorkerSkillId = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    WorkerProfileId = table.Column<int>(nullable: false),
                     SkillId = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(nullable: false),
+                    WorkerProfileId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_WorkerSkills", x => x.WorkerSkillId);
+                    table.PrimaryKey("PK_Skills", x => x.SkillId);
                     table.ForeignKey(
-                        name: "FK_WorkerSkills_Skills_SkillId",
-                        column: x => x.SkillId,
-                        principalTable: "Skills",
-                        principalColumn: "SkillId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_WorkerSkills_WorkerProfiles_WorkerProfileId",
+                        name: "FK_Skills_WorkerProfiles_WorkerProfileId",
                         column: x => x.WorkerProfileId,
                         principalTable: "WorkerProfiles",
                         principalColumn: "WorkerProfileId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Skills_WorkerProfileId",
+                table: "Skills",
+                column: "WorkerProfileId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_WorkerProfiles_AddressId",
                 table: "WorkerProfiles",
-                column: "AddressId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_WorkerSkills_SkillId",
-                table: "WorkerSkills",
-                column: "SkillId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_WorkerSkills_WorkerProfileId",
-                table: "WorkerSkills",
-                column: "WorkerProfileId");
+                column: "AddressId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "WorkerSkills");
-
             migrationBuilder.DropTable(
                 name: "Skills");
 

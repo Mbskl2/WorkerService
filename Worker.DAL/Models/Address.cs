@@ -10,6 +10,5 @@ namespace Worker.DAL.Models
         public string? FlatNumber { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
-        public WorkerProfile WorkerProfile { get; set; }
     }
 }

@@ -8,8 +8,7 @@ namespace Worker.DAL.Models
     {
         public int WorkerProfileId { get; set; }
         public string Name { get; set; }
-        public int AddressId { get; set; }
         public Address Address { get; set; }
-        public IList<WorkerSkill> WorkerSkills { get; set; }
+        public IList<Skill> Skills { get; set; }
     }
 }

@@ -6,6 +6,6 @@ namespace Worker.DAL.Models
     {
         public int SkillId { get; set; }
         public string Name { get; set; }
-        public IList<WorkerSkill> WorkerSkills { get; set; }
+
     }
 }
