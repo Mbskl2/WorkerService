@@ -1,9 +1,12 @@
 using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Worker.DAL;
+using Worker.DAL.Models;
 
 namespace Worker.Api
 {
@@ -20,6 +23,8 @@ namespace Worker.Api
         {
             services.AddControllers();
             services.AddSwaggerGen();
+            services.AddDbContext<WorkerDbContext>(options =>
+                options.UseSqlite(Configuration.GetConnectionString("WorkerDatabase")));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
