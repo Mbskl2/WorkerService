@@ -8,7 +8,7 @@ using Worker.DAL;
 namespace Worker.DAL.Migrations
 {
     [DbContext(typeof(WorkerDbContext))]
-    [Migration("20200722194012_InitialMigration")]
+    [Migration("20200722204057_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -19,7 +19,7 @@ namespace Worker.DAL.Migrations
 
             modelBuilder.Entity("Worker.DAL.Models.Address", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("AddressId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -42,14 +42,14 @@ namespace Worker.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
+                    b.HasKey("AddressId");
 
                     b.ToTable("Addresses");
                 });
 
             modelBuilder.Entity("Worker.DAL.Models.Skill", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("SkillId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -57,14 +57,14 @@ namespace Worker.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
+                    b.HasKey("SkillId");
 
                     b.ToTable("Skills");
                 });
 
             modelBuilder.Entity("Worker.DAL.Models.WorkerProfile", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("WorkerProfileId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -75,16 +75,17 @@ namespace Worker.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
+                    b.HasKey("WorkerProfileId");
 
-                    b.HasIndex("AddressId");
+                    b.HasIndex("AddressId")
+                        .IsUnique();
 
                     b.ToTable("WorkerProfiles");
                 });
 
             modelBuilder.Entity("Worker.DAL.Models.WorkerSkill", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("WorkerSkillId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -94,7 +95,7 @@ namespace Worker.DAL.Migrations
                     b.Property<int>("WorkerProfileId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("Id");
+                    b.HasKey("WorkerSkillId");
 
                     b.HasIndex("SkillId");
 
@@ -106,8 +107,8 @@ namespace Worker.DAL.Migrations
             modelBuilder.Entity("Worker.DAL.Models.WorkerProfile", b =>
                 {
                     b.HasOne("Worker.DAL.Models.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId")
+                        .WithOne("WorkerProfile")
+                        .HasForeignKey("Worker.DAL.Models.WorkerProfile", "AddressId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -115,13 +116,13 @@ namespace Worker.DAL.Migrations
             modelBuilder.Entity("Worker.DAL.Models.WorkerSkill", b =>
                 {
                     b.HasOne("Worker.DAL.Models.Skill", "Skill")
-                        .WithMany()
+                        .WithMany("WorkerSkills")
                         .HasForeignKey("SkillId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Worker.DAL.Models.WorkerProfile", "WorkerProfile")
-                        .WithMany()
+                        .WithMany("WorkerSkills")
                         .HasForeignKey("WorkerProfileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

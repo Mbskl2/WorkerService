@@ -10,7 +10,7 @@ namespace Worker.DAL.Migrations
                 name: "Addresses",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    AddressId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Street = table.Column<string>(nullable: false),
                     HouseNumber = table.Column<string>(nullable: false),
@@ -20,39 +20,39 @@ namespace Worker.DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Addresses", x => x.Id);
+                    table.PrimaryKey("PK_Addresses", x => x.AddressId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Skills",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    SkillId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Skills", x => x.Id);
+                    table.PrimaryKey("PK_Skills", x => x.SkillId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "WorkerProfiles",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    WorkerProfileId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(nullable: false),
                     AddressId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_WorkerProfiles", x => x.Id);
+                    table.PrimaryKey("PK_WorkerProfiles", x => x.WorkerProfileId);
                     table.ForeignKey(
                         name: "FK_WorkerProfiles_Addresses_AddressId",
                         column: x => x.AddressId,
                         principalTable: "Addresses",
-                        principalColumn: "Id",
+                        principalColumn: "AddressId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -60,32 +60,33 @@ namespace Worker.DAL.Migrations
                 name: "WorkerSkills",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    WorkerSkillId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     WorkerProfileId = table.Column<int>(nullable: false),
                     SkillId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_WorkerSkills", x => x.Id);
+                    table.PrimaryKey("PK_WorkerSkills", x => x.WorkerSkillId);
                     table.ForeignKey(
                         name: "FK_WorkerSkills_Skills_SkillId",
                         column: x => x.SkillId,
                         principalTable: "Skills",
-                        principalColumn: "Id",
+                        principalColumn: "SkillId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_WorkerSkills_WorkerProfiles_WorkerProfileId",
                         column: x => x.WorkerProfileId,
                         principalTable: "WorkerProfiles",
-                        principalColumn: "Id",
+                        principalColumn: "WorkerProfileId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_WorkerProfiles_AddressId",
                 table: "WorkerProfiles",
-                column: "AddressId");
+                column: "AddressId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_WorkerSkills_SkillId",
