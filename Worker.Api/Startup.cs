@@ -25,6 +25,9 @@ namespace Worker.Api
             services.AddSwaggerGen();
             services.AddDbContext<WorkerDbContext>(options =>
                 options.UseSqlite(Configuration.GetConnectionString("WorkerDatabase")));
+            services.AddScoped<IWorkerRepository, WorkerRepository>();
+            services.AddTransient<WorkerProfileFinder>();
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

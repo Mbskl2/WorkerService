@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Worker.DAL;
 using Worker.DAL.Models;
+using Worker.Models;
 
 namespace Worker.Api.Controllers
 {
@@ -11,60 +13,55 @@ namespace Worker.Api.Controllers
     [ApiController]
     public class WorkersController : ControllerBase
     {
-        private readonly WorkerDbContext dbContext;
+        private readonly IWorkerRepository workerRepository;
         private readonly WorkerProfileFinder workerFinder;
 
-        public WorkersController(WorkerDbContext dbContext, WorkerProfileFinder workerFinder)
+        public WorkersController(IWorkerRepository workerRepository, WorkerProfileFinder workerFinder)
         {
-            this.dbContext = dbContext;
+            this.workerRepository = workerRepository;
             this.workerFinder = workerFinder;
         }
 
         [HttpGet]
-        public IEnumerable<WorkerProfile> Get()
+        public async Task<IActionResult> Get()
         {
-            return dbContext.WorkerProfiles 
-                .Include(x => x.Address) // TODO: Może include można zapisać ładniej w tej drugiej notacji?
-                .Include(x => x.Skills);
+            var allWorkers = await workerRepository.Get();
+            return Ok(allWorkers);
         }
 
         [HttpGet("{id}")]
-        public WorkerProfile Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            // TODO: Czy powinienem to zrobić async?
-            // TODO: Co robić z błędami?
-            return dbContext.WorkerProfiles
-                .Include(x => x.Address)
-                .Include(x => x.Skills)
-                .First(x => x.WorkerProfileId == id);
+            var worker = await workerRepository.Get(id);
+            if (worker == null)
+                return NotFound();
+            return Ok(worker);
         }
 
         [HttpGet("{skills}")]
-        public IEnumerable<WorkerProfile> Get(IList<Skill> skills)
+        public async Task<IActionResult> Get(IList<ISkill> skills)
         {
-            return workerFinder.FindBySkills(skills);
+            var workersWithMatchingSkills =  await workerFinder.FindBySkills(skills);
+            return Ok(workersWithMatchingSkills);
         }
 
-        [HttpGet("{skills}")] // TODO: Jak przysłać tu adres? Bo raczej nie Getem.
-        public IEnumerable<WorkerProfile> Get(double radiusInKilometers, Address address)
+        [HttpGet("{radius}/{center}")] // TODO: Jak przysłać tu adres? Bo raczej nie Getem.
+        public async Task<IActionResult> Get(double radiusInKilometers, IAddress address)
         {
-            return workerFinder.FindInRadiusOfAddress(radiusInKilometers, address);
+            var workersInVicinity =  await workerFinder.FindInRadiusOfAddress(radiusInKilometers, address);
+            return Ok(workersInVicinity);
         }
 
         [HttpPost]
-        public void Post([FromBody] WorkerProfile worker)
+        public async Task Post([FromBody] IWorkerProfile worker)
         {
-            worker.WorkerProfileId = 0;
-            dbContext.WorkerProfiles.Add(worker);
-            dbContext.SaveChanges();
+            await workerRepository.Save(worker);
         }
 
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] WorkerProfile worker)
+        public async Task Put(int id, [FromBody] IWorkerProfile worker)
         {
-            worker.WorkerProfileId = id;
-            dbContext.WorkerProfiles.Update(worker);
-            dbContext.SaveChanges();
+            await workerRepository.Save(id, worker);
         }
     }
 }

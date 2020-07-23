@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Worker.Models;
 
 namespace Worker.DAL.Models
 {
-    public class Address
+    public class Address : IAddress
     {
         public int AddressId { get; set; }
         public string Street { get; set; }
