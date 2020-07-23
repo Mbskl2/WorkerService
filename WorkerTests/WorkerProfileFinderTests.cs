@@ -21,6 +21,7 @@ namespace WorkerTests
             finder = new WorkerProfileFinder(new FakeRepository());
         }
 
+        #region Find by skills
         [Test]
         public async Task ReturnEmpty_When_NoSkillsSpecified()
         {
@@ -110,5 +111,12 @@ namespace WorkerTests
                 .Any(s => s.Name.Equals(skill, StringComparison.InvariantCultureIgnoreCase))
                 .Should().BeTrue();
         }
+        #endregion
+
+        #region Find in vicinity
+
+        
+
+        #endregion
     }
 }

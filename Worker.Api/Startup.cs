@@ -1,12 +1,14 @@
 using System.Reflection;
+using Location;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Worker.Api.Configuration;
 using Worker.DAL;
-using Worker.DAL.Models;
+using Worker.Location;
 
 namespace Worker.Api
 {
@@ -22,10 +24,17 @@ namespace Worker.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddHealthChecks();
             services.AddSwaggerGen();
+            services.AddHttpClient<GeocodingService>()
+                .AddPolicyHandler(PollyConfig.GetRetryPolicy())
+                .AddPolicyHandler(PollyConfig.GetCircuitBreakerPolicy());
+                
             services.AddDbContext<WorkerDbContext>(options =>
                 options.UseSqlite(Configuration.GetConnectionString("WorkerDatabase")));
             services.AddScoped<IWorkerRepository, WorkerRepository>();
+            services.AddTransient<IAddressToCoordinatesTranslator, AddressToCoordinatesTranslator>();
+            services.AddTransient<DistanceCalculator>();
             services.AddTransient<WorkerProfileFinder>();
 
         }
@@ -43,7 +52,11 @@ namespace Worker.Api
             app.UseRouting();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
-                endpoints.MapControllers());
+            {
+                endpoints.MapControllers();
+                endpoints.MapHealthChecks("/hc");
+            });
         }
+
     }
 }

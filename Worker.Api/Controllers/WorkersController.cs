@@ -46,9 +46,9 @@ namespace Worker.Api.Controllers
         }
 
         [HttpGet("{radius}/{center}")] // TODO: Jak przysłać tu adres? Bo raczej nie Getem.
-        public async Task<IActionResult> Get(double radiusInKilometers, IAddress address)
+        public async Task<IActionResult> Get(double radius)
         {
-            var workersInVicinity =  await workerFinder.FindInRadiusOfAddress(radiusInKilometers, address);
+            var workersInVicinity =  await workerFinder.FindInRadiusOfAddress(50.0, null);
             return Ok(workersInVicinity);
         }
 

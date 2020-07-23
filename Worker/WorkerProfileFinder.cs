@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Worker.Location;
 using Worker.Models;
 
 namespace Worker
@@ -9,10 +10,12 @@ namespace Worker
     public class WorkerProfileFinder
     {
         private readonly IWorkerRepository workerRepository;
+        private readonly IAddressToCoordinatesTranslator addressToCoordinatesTranslator;
 
-        public WorkerProfileFinder(IWorkerRepository workerRepository)
+        public WorkerProfileFinder(IWorkerRepository workerRepository, IAddressToCoordinatesTranslator addressToCoordinatesTranslator)
         {
             this.workerRepository = workerRepository;
+            this.addressToCoordinatesTranslator = addressToCoordinatesTranslator;
         }
 
         public async Task<IEnumerable<IWorkerProfile>> FindBySkills(IList<ISkill> skills)
