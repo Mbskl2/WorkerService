@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Worker.Api", "Worker.Api\Wo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Worker.DAL", "Worker.DAL\Worker.DAL.csproj", "{8E53360E-D4C3-466A-944C-5A705EEC4432}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Worker", "Worker\Worker.csproj", "{89FC27FF-AF13-4566-9CBD-8499FDD9AAFD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Worker", "Worker\Worker.csproj", "{89FC27FF-AF13-4566-9CBD-8499FDD9AAFD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkerTests", "WorkerTests\WorkerTests.csproj", "{45424438-ED5A-42E5-84CF-07ABD7A18ADD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{89FC27FF-AF13-4566-9CBD-8499FDD9AAFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89FC27FF-AF13-4566-9CBD-8499FDD9AAFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89FC27FF-AF13-4566-9CBD-8499FDD9AAFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45424438-ED5A-42E5-84CF-07ABD7A18ADD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45424438-ED5A-42E5-84CF-07ABD7A18ADD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45424438-ED5A-42E5-84CF-07ABD7A18ADD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45424438-ED5A-42E5-84CF-07ABD7A18ADD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
