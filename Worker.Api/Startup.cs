@@ -26,6 +26,7 @@ namespace Worker.Api
             services.AddControllers();
             services.AddHealthChecks();
             services.AddSwaggerGen();
+            services.AddSingleton(_ => Configuration.GetConnectionString("GoogleLocationApi:Key"));
             services.AddHttpClient<GeocodingService>()
                 .AddPolicyHandler(PollyConfig.GetRetryPolicy())
                 .AddPolicyHandler(PollyConfig.GetCircuitBreakerPolicy());

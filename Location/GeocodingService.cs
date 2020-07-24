@@ -14,12 +14,12 @@ namespace Location
 {
     public class GeocodingService
     {
-        private readonly IConfiguration configuration;
+        private readonly string apiKey;
         public HttpClient Client { get; }
 
-        public GeocodingService(HttpClient client, IConfiguration configuration)
+        public GeocodingService(HttpClient client, string apiKey)
         {
-            this.configuration = configuration;
+            this.apiKey = apiKey;
 
             client.BaseAddress = new Uri("https://maps.googleapis.com/");
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -41,7 +41,6 @@ namespace Location
 
         private Task<HttpResponseMessage> CallGeocodingApi(string addressString)
         {
-            string apiKey = configuration["GoogleLocationApi:Key"]; // TODO: Lepiej żeby po konfiguracji grzebał startup
             string requestUri = $@"/maps/api/geocode/json?address={addressString}&key={apiKey}";
             return Client.GetAsync(requestUri);
         }

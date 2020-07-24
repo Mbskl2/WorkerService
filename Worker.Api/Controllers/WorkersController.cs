@@ -1,9 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Worker.DAL;
 using Worker.DAL.Models;
 using Worker.Models;
 
@@ -38,30 +35,36 @@ namespace Worker.Api.Controllers
             return Ok(worker);
         }
 
-        [HttpGet("{skills}")]
-        public async Task<IActionResult> Get(IList<ISkill> skills)
+        [HttpGet("bySkills")]
+        public async Task<IActionResult> Get(IList<string> skills)
         {
             var workersWithMatchingSkills =  await workerFinder.FindBySkills(skills);
             return Ok(workersWithMatchingSkills);
         }
 
-        [HttpGet("{radius}/{center}")] // TODO: Jak przysłać tu adres? Bo raczej nie Getem.
-        public async Task<IActionResult> Get(double radius)
+        [HttpGet("byLocation")]
+        public async Task<IActionResult> Get(
+            double radius, string countryIsoCode, string city, string street, string houseNumber)
         {
-            var workersInVicinity =  await workerFinder.FindInRadiusOfAddress(50.0, null);
+            var address = new Address()
+                {Country = countryIsoCode, City = city, Street = street, HouseNumber = houseNumber};
+            var workersInVicinity =  await workerFinder.FindInRadiusOfAddress(50.0, address);
             return Ok(workersInVicinity);
         }
 
         [HttpPost]
-        public async Task Post([FromBody] IWorkerProfile worker)
+        public async Task<IActionResult> Post([FromBody] IWorkerProfile worker)
         {
-            await workerRepository.Save(worker); // TODO: Zwrócić status created
+            await workerRepository.Save(worker);
+            return AcceptedAtRoute(nameof(Get), worker);
         }
 
         [HttpPut("{id}")]
-        public async Task Put(int id, [FromBody] IWorkerProfile worker)
+        public async Task<IActionResult> Put(int id, [FromBody] IWorkerProfile worker)
         {
-            await workerRepository.Save(id, worker); // TODO: Zwrócić status created
+            worker.WorkerProfileId = id;
+            await workerRepository.Save(id, worker);
+            return AcceptedAtRoute(nameof(Get), new {id}, worker);
         }
     }
 }
