@@ -4,7 +4,7 @@ using Worker;
 using Worker.DAL.Models;
 using Worker.Models;
 
-namespace WorkerTests
+namespace WorkerTests.Fakes
 {
     class FakeRepository : IWorkerRepository
     {
@@ -15,7 +15,7 @@ namespace WorkerTests
                 new WorkerProfile()
                 {
                     Name = "Janek Kos",
-                    Address = new Address() {City = "Wrocław", Country = "PL", Street = "Kromera", HouseNumber = "25"},
+                    Address = new Address() {City = "Wrocław", Country = "PL", Street = "Kromera", HouseNumber = "1"},
                     Skills = new List<ISkill>
                     {
                         new Skill() {Name = "Swimming"},
@@ -26,7 +26,7 @@ namespace WorkerTests
                 new WorkerProfile()
                 {
                     Name = "Ola Sztos",
-                    Address = new Address() {City = "Wrocław", Country = "PL", Street = "Bema", HouseNumber = "9"},
+                    Address = new Address() {City = "Wrocław", Country = "PL", Street = "Bema", HouseNumber = "2"},
                     Skills = new List<ISkill>
                     {
                         new Skill() {Name = "Swimming"},
@@ -36,7 +36,7 @@ namespace WorkerTests
                 new WorkerProfile()
                 {
                     Name = "Patryk Gajos",
-                    Address = new Address() {City = "Kraków", Country = "PL", Street = "Popiełuszki", HouseNumber = "2"},
+                    Address = new Address() {City = "Kraków", Country = "PL", Street = "Popiełuszki", HouseNumber = "3"},
                     Skills = new List<ISkill>
                     {
                         new Skill() {Name = "Shooting"},
@@ -46,7 +46,7 @@ namespace WorkerTests
                 new WorkerProfile()
                 {
                     Name = "Kamil Pracz",
-                    Address = new Address() {City = "Wrocław", Country = "PL", Street = "Wyszyńskiego", HouseNumber = "5"},
+                    Address = new Address() {City = "Wrocław", Country = "PL", Street = "Wyszyńskiego", HouseNumber = "4"},
                     Skills = new List<ISkill>
                     {
                         new Skill() {Name = "Singing"},
@@ -55,7 +55,7 @@ namespace WorkerTests
                 new WorkerProfile()
                 {
                     Name = "Remi Julien",
-                    Address = new Address() {City = "Lille", Country = "FR", Street = "Rue Arago", HouseNumber = "12"},
+                    Address = new Address() {City = "Lille", Country = "FR", Street = "Rue Arago", HouseNumber = "5"},
                     Skills = new List<ISkill>
                     {
                         new Skill() {Name = "Swimming"},

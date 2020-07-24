@@ -11,11 +11,34 @@ namespace Worker
     {
         private readonly IWorkerRepository workerRepository;
         private readonly IAddressToCoordinatesTranslator addressToCoordinatesTranslator;
+        private readonly DistanceCalculator distanceCalculator;
 
-        public WorkerProfileFinder(IWorkerRepository workerRepository, IAddressToCoordinatesTranslator addressToCoordinatesTranslator)
+        public WorkerProfileFinder(
+            IWorkerRepository workerRepository,
+            IAddressToCoordinatesTranslator addressToCoordinatesTranslator,
+            DistanceCalculator distanceCalculator)
         {
             this.workerRepository = workerRepository;
             this.addressToCoordinatesTranslator = addressToCoordinatesTranslator;
+            this.distanceCalculator = distanceCalculator;
+        }
+
+        public async Task<IEnumerable<IWorkerProfile>> FindInRadiusOfAddress(double radiusInKilometers, IAddress centerAddress)
+        {
+            MapPoint center = await addressToCoordinatesTranslator.Translate(centerAddress);
+            var workers = await workerRepository.Get();
+            var tasks 
+                = workers.Select(async worker =>
+                    new { worker, IsLivingInRadius = await LivesInRadiusOfCenter(radiusInKilometers, worker.Address, center)});
+            var workersWithIsLivingInRadius = await Task.WhenAll(tasks);
+            return workersWithIsLivingInRadius.Where(x => x.IsLivingInRadius).Select(x => x.worker);
+        }
+
+        private async Task<bool> LivesInRadiusOfCenter(double radiusInKilometers, IAddress address, MapPoint centerCoordinates)
+        {
+            MapPoint addressCoordinates = await addressToCoordinatesTranslator.Translate(address);
+            double distance =  distanceCalculator.CalculateInKm(addressCoordinates, centerCoordinates);
+            return distance <= radiusInKilometers;
         }
 
         public async Task<IEnumerable<IWorkerProfile>> FindBySkills(IList<ISkill> skills)
@@ -33,11 +56,6 @@ namespace Worker
         private bool ContainsSkill(IList<ISkill> skills, ISkill skill)
         {
             return skills.Any(s => s.Name.Equals(skill.Name, StringComparison.InvariantCultureIgnoreCase));
-        }
-
-        public Task<IEnumerable<IWorkerProfile>> FindInRadiusOfAddress(double radiusInKilometers, IAddress center)
-        {
-            return null;
         }
     }
 }
