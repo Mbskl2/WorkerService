@@ -3,8 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Worker;
-using Worker.DAL;
+using Worker.DAL.Entities;
 
 namespace Worker.DAL
 {
@@ -30,7 +29,6 @@ namespace Worker.DAL
 
         public async Task<Models.WorkerProfile> Get(int id)
         {
-            // TODO: Co robić z błędami?
             var worker =  await dbContext.WorkerProfiles
                 .Include(x => x.Address)
                 .Include(x => x.Skills)
@@ -48,12 +46,42 @@ namespace Worker.DAL
             return dbContext.SaveChangesAsync();
         }
 
-        public Task Save(int id, Models.WorkerProfile worker)
+        public async Task Save(int id, Models.WorkerProfile worker)
         {
             worker.WorkerProfileId = id;
             var entity = mapper.Map<Entities.WorkerProfile>(worker);
-            dbContext.WorkerProfiles.Update(entity);
-            return dbContext.SaveChangesAsync();
+            await CopyToExistingEntity(id, entity);
+            await dbContext.SaveChangesAsync();
+        }
+
+        private async Task CopyToExistingEntity(int id, WorkerProfile newWorker)
+        {
+            Entities.WorkerProfile existingWorker = await GetExistingWorker(id);
+            existingWorker.Name = newWorker.Name;
+            CopyAddressData(newWorker.Address, existingWorker.Address);
+            existingWorker.Skills = newWorker.Skills;
+        }
+
+        private Task<WorkerProfile> GetExistingWorker(int existingId)
+        {
+            return dbContext.WorkerProfiles
+                .Include(x => x.Skills)
+                .FirstAsync(x => x.WorkerProfileId == existingId);
+        }
+
+        private void CopyAddressData(Entities.Address src, Entities.Address dst)
+        {
+            dst.Country = src.Country;
+            dst.City = src.City;
+            dst.Street = src.Street;
+            dst.HouseNumber = src.HouseNumber;
+        }
+
+
+        private void RemoveRepeatedSkills(Entities.WorkerProfile newWorker, Entities.WorkerProfile existingWorker)
+        {
+            var newSkills = newWorker.Skills.Except(existingWorker.Skills, new SkillEqualityComparer());
+            newSkills.ToList().ForEach(s => existingWorker.Skills.Add(s));
         }
     }
 }

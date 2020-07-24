@@ -36,7 +36,7 @@ namespace Worker.Api.Controllers
         }
 
         [HttpGet("bySkills")]
-        public async Task<IActionResult> Get(IList<string> skills)
+        public async Task<IActionResult> Get([FromQuery] string[] skills)
         {
             var skillList = skills.Select(s => new Skill() {Name = s}).ToList();
             var workersWithMatchingSkills =  await workerFinder.FindBySkills(skillList);
@@ -45,11 +45,11 @@ namespace Worker.Api.Controllers
 
         [HttpGet("byLocation")]
         public async Task<IActionResult> Get(
-            double radius, string countryIsoCode, string city, string street, string houseNumber)
+            double radiusInKm, string countryIsoCode, string city, string street, string houseNumber)
         {
             var address = new Address()
                 {Country = countryIsoCode, City = city, Street = street, HouseNumber = houseNumber};
-            var workersInVicinity =  await workerFinder.FindInRadiusOfAddress(50.0, address);
+            var workersInVicinity =  await workerFinder.FindInRadiusOfAddress(radiusInKm, address);
             return Ok(workersInVicinity);
         }
 
@@ -64,6 +64,8 @@ namespace Worker.Api.Controllers
         public async Task<IActionResult> Put(int id, [FromBody] WorkerProfile worker)
         {
             worker.WorkerProfileId = id;
+            if (workerRepository.Get(id) == null)
+                return NotFound();
             await workerRepository.Save(id, worker);
             return Accepted(worker);
         }
