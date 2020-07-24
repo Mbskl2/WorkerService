@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -7,17 +6,16 @@ using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Location.ResponseModels;
-using Microsoft.Extensions.Configuration;
 using Worker.Location;
 
 namespace Location
 {
     public class GeocodingService
     {
-        private readonly string apiKey;
+        private readonly IApiKey apiKey;
         public HttpClient Client { get; }
 
-        public GeocodingService(HttpClient client, string apiKey)
+        public GeocodingService(HttpClient client, IApiKey apiKey)
         {
             this.apiKey = apiKey;
 
@@ -41,7 +39,7 @@ namespace Location
 
         private Task<HttpResponseMessage> CallGeocodingApi(string addressString)
         {
-            string requestUri = $@"/maps/api/geocode/json?address={addressString}&key={apiKey}";
+            string requestUri = $@"/maps/api/geocode/json?address={addressString}&key={apiKey.Get()}";
             return Client.GetAsync(requestUri);
         }
 
