@@ -55,13 +55,13 @@ namespace Worker.Api.Controllers
         [HttpPost]
         public async Task Post([FromBody] IWorkerProfile worker)
         {
-            await workerRepository.Save(worker);
+            await workerRepository.Save(worker); // TODO: Zwrócić status created
         }
 
         [HttpPut("{id}")]
         public async Task Put(int id, [FromBody] IWorkerProfile worker)
         {
-            await workerRepository.Save(id, worker);
+            await workerRepository.Save(id, worker); // TODO: Zwrócić status created
         }
     }
 }

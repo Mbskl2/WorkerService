@@ -18,7 +18,7 @@ namespace WorkerTests
         [SetUp]
         public void SetUp()
         {
-            finder = new WorkerProfileFinder(new FakeRepository());
+            finder = new WorkerProfileFinder(new FakeRepository(), null);
         }
 
         #region Find by skills
