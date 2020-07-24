@@ -6,9 +6,9 @@ namespace Worker
 {
     public interface IWorkerRepository
     {
-        public Task<IEnumerable<IWorkerProfile>> Get();
-        public Task<IWorkerProfile> Get(int id);
-        public Task Save(IWorkerProfile worker);
-        public Task Save(int id, IWorkerProfile worker);
+        public Task<IEnumerable<WorkerProfile>> Get();
+        public Task<WorkerProfile> Get(int id);
+        public Task Save(WorkerProfile worker);
+        public Task Save(int id, WorkerProfile worker);
     }
 }

@@ -1,5 +1,8 @@
+using System;
 using System.Reflection;
+using AutoMapper;
 using Location;
+using Location.ResponseModels;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -26,7 +29,8 @@ namespace Worker.Api
             services.AddControllers();
             services.AddHealthChecks();
             services.AddSwaggerGen();
-            services.AddSingleton(_ => Configuration.GetConnectionString("GoogleLocationApi:Key"));
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddTransient<IApiKey, GoogleLocationApiKey>();
             services.AddHttpClient<GeocodingService>()
                 .AddPolicyHandler(PollyConfig.GetRetryPolicy())
                 .AddPolicyHandler(PollyConfig.GetCircuitBreakerPolicy());

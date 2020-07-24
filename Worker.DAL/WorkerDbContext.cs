@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Worker.DAL.Models;
+using Worker.DAL.Entities;
 
 namespace Worker.DAL
 {
+#pragma warning disable 8618
     public class WorkerDbContext: DbContext
     {
         public DbSet<WorkerProfile> WorkerProfiles { get; set; }

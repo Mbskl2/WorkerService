@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Worker.DAL.Models;
 using Worker.Models;
 
 namespace Worker.Api.Controllers
@@ -38,7 +38,8 @@ namespace Worker.Api.Controllers
         [HttpGet("bySkills")]
         public async Task<IActionResult> Get(IList<string> skills)
         {
-            var workersWithMatchingSkills =  await workerFinder.FindBySkills(skills);
+            var skillList = skills.Select(s => new Skill() {Name = s}).ToList();
+            var workersWithMatchingSkills =  await workerFinder.FindBySkills(skillList);
             return Ok(workersWithMatchingSkills);
         }
 
@@ -53,18 +54,18 @@ namespace Worker.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] IWorkerProfile worker)
+        public async Task<IActionResult> Post([FromBody] WorkerProfile worker)
         {
             await workerRepository.Save(worker);
-            return AcceptedAtRoute(nameof(Get), worker);
+            return Accepted(worker);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] IWorkerProfile worker)
+        public async Task<IActionResult> Put(int id, [FromBody] WorkerProfile worker)
         {
             worker.WorkerProfileId = id;
             await workerRepository.Save(id, worker);
-            return AcceptedAtRoute(nameof(Get), new {id}, worker);
+            return Accepted(worker);
         }
     }
 }

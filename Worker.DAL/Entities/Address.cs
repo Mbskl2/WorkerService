@@ -1,14 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Worker.Models;
-
-namespace Worker.DAL.Models
+﻿namespace Worker.DAL.Entities
 {
-    public class Address : IAddress
+#pragma warning disable 8618
+    public class Address
     {
         public int AddressId { get; set; }
         public string Street { get; set; }
         public string HouseNumber { get; set; }
-        public string? FlatNumber { get; set; } // TODO: To można wyrzucić
         public string City { get; set; }
         public string Country { get; set; }
     }

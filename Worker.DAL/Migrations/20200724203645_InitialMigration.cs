@@ -14,7 +14,6 @@ namespace Worker.DAL.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Street = table.Column<string>(nullable: false),
                     HouseNumber = table.Column<string>(nullable: false),
-                    FlatNumber = table.Column<string>(nullable: true),
                     City = table.Column<string>(nullable: false),
                     Country = table.Column<string>(nullable: false)
                 },

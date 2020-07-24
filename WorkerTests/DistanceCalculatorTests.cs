@@ -7,7 +7,6 @@ using Location;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Primitives;
 using NUnit.Framework;
-using Worker.DAL.Models;
 using Worker.Location;
 
 namespace WorkerTests

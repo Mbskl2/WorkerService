@@ -5,6 +5,6 @@ namespace Worker.Location
 {
     public interface IAddressToCoordinatesTranslator
     {
-        Task<MapPoint> Translate(IAddress address);
+        Task<MapPoint> Translate(Address address);
     }
 }

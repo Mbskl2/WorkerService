@@ -9,7 +9,7 @@ using Worker.DAL;
 namespace Worker.DAL.Migrations
 {
     [DbContext(typeof(WorkerDbContext))]
-    [Migration("20200722211224_InitialMigration")]
+    [Migration("20200724203645_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -18,7 +18,7 @@ namespace Worker.DAL.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.6");
 
-            modelBuilder.Entity("Worker.DAL.Models.Address", b =>
+            modelBuilder.Entity("Worker.DAL.Entities.Address", b =>
                 {
                     b.Property<int>("AddressId")
                         .ValueGeneratedOnAdd()
@@ -30,9 +30,6 @@ namespace Worker.DAL.Migrations
 
                     b.Property<string>("Country")
                         .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("FlatNumber")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("HouseNumber")
@@ -48,7 +45,7 @@ namespace Worker.DAL.Migrations
                     b.ToTable("Addresses");
                 });
 
-            modelBuilder.Entity("Worker.DAL.Models.Skill", b =>
+            modelBuilder.Entity("Worker.DAL.Entities.Skill", b =>
                 {
                     b.Property<int>("SkillId")
                         .ValueGeneratedOnAdd()
@@ -68,7 +65,7 @@ namespace Worker.DAL.Migrations
                     b.ToTable("Skills");
                 });
 
-            modelBuilder.Entity("Worker.DAL.Models.WorkerProfile", b =>
+            modelBuilder.Entity("Worker.DAL.Entities.WorkerProfile", b =>
                 {
                     b.Property<int>("WorkerProfileId")
                         .ValueGeneratedOnAdd()
@@ -88,16 +85,16 @@ namespace Worker.DAL.Migrations
                     b.ToTable("WorkerProfiles");
                 });
 
-            modelBuilder.Entity("Worker.DAL.Models.Skill", b =>
+            modelBuilder.Entity("Worker.DAL.Entities.Skill", b =>
                 {
-                    b.HasOne("Worker.DAL.Models.WorkerProfile", null)
+                    b.HasOne("Worker.DAL.Entities.WorkerProfile", null)
                         .WithMany("Skills")
                         .HasForeignKey("WorkerProfileId");
                 });
 
-            modelBuilder.Entity("Worker.DAL.Models.WorkerProfile", b =>
+            modelBuilder.Entity("Worker.DAL.Entities.WorkerProfile", b =>
                 {
-                    b.HasOne("Worker.DAL.Models.Address", "Address")
+                    b.HasOne("Worker.DAL.Entities.Address", "Address")
                         .WithMany()
                         .HasForeignKey("AddressId")
                         .OnDelete(DeleteBehavior.Cascade)

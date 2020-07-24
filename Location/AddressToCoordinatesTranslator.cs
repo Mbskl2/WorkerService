@@ -16,13 +16,13 @@ namespace Location
             geocodingApi = geocodingService;
         }
 
-        public async Task<MapPoint> Translate(IAddress address)
+        public async Task<MapPoint> Translate(Address address)
         {
             var addressString = CreateAddressString(address);
             return await geocodingApi.GetCoordinates(addressString);
         }
 
-        private string CreateAddressString(IAddress a)
+        private string CreateAddressString(Address a)
         {
             var country = new RegionInfo(a.Country);
             return $@"{a.HouseNumber} {a.Street} {a.City}, {country.EnglishName}";

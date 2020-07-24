@@ -23,7 +23,7 @@ namespace Worker
             this.distanceCalculator = distanceCalculator;
         }
 
-        public async Task<IEnumerable<IWorkerProfile>> FindInRadiusOfAddress(double radiusInKilometers, IAddress centerAddress)
+        public async Task<IEnumerable<WorkerProfile>> FindInRadiusOfAddress(double radiusInKilometers, Address centerAddress)
         {
             MapPoint center = await addressToCoordinatesTranslator.Translate(centerAddress);
             var workers = await workerRepository.Get();
@@ -34,26 +34,26 @@ namespace Worker
             return workersWithIsLivingInRadius.Where(x => x.IsLivingInRadius).Select(x => x.worker);
         }
 
-        private async Task<bool> LivesInRadiusOfCenter(double radiusInKilometers, IAddress address, MapPoint centerCoordinates)
+        private async Task<bool> LivesInRadiusOfCenter(double radiusInKilometers, Address address, MapPoint centerCoordinates)
         {
             MapPoint addressCoordinates = await addressToCoordinatesTranslator.Translate(address);
             double distance =  distanceCalculator.CalculateInKm(addressCoordinates, centerCoordinates);
             return distance <= radiusInKilometers;
         }
 
-        public async Task<IEnumerable<IWorkerProfile>> FindBySkills(IList<ISkill> skills)
+        public async Task<IEnumerable<WorkerProfile>> FindBySkills(IList<Skill> skills)
         {
             if (skills.Count == 0)
-                return new List<IWorkerProfile>();
+                return new List<WorkerProfile>();
             var allWorkers = await workerRepository.Get();
             return allWorkers.Where(w => HasAllSkills(w, skills));
         }
 
-        private bool HasAllSkills(IWorkerProfile worker, IList<ISkill> skills)
+        private bool HasAllSkills(WorkerProfile worker, IList<Skill> skills)
         {
             return skills.All(s => ContainsSkill(worker.Skills, s));
         }
-        private bool ContainsSkill(IList<ISkill> skills, ISkill skill)
+        private bool ContainsSkill(IList<Skill> skills, Skill skill)
         {
             return skills.Any(s => s.Name.Equals(skill.Name, StringComparison.InvariantCultureIgnoreCase));
         }

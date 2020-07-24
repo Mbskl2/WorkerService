@@ -6,7 +6,6 @@ using NUnit.Framework;
 using Worker;
 using Worker.Models;
 using FluentAssertions;
-using Worker.DAL.Models;
 using Worker.Location;
 using WorkerTests.Fakes;
 
@@ -105,12 +104,12 @@ namespace WorkerTests
             AssertHasSkill(list[0], skills[2]);
         }
 
-        private List<ISkill> ListOf(params string[] skills)
+        private List<Worker.Models.Skill> ListOf(params string[] skills)
         {
-            return skills.Select(x => new Skill() {Name = x}).Select(x => (ISkill)x).ToList();
+            return skills.Select(x => new Skill() {Name = x}).Select(x => (Skill)x).ToList();
         }
 
-        private void AssertHasSkill(IWorkerProfile worker, string skill)
+        private void AssertHasSkill(WorkerProfile worker, string skill)
         {
             worker.Skills
                 .Any(s => s.Name.Equals(skill, StringComparison.InvariantCultureIgnoreCase))
