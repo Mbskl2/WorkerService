@@ -14,6 +14,8 @@ WORKDIR "/src/Worker.Api"
 RUN dotnet build "Worker.Api.csproj" -c Release -o /app/build
 
 FROM build AS publish
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
+RUN apt-get install -y nodejs
 RUN dotnet publish "Worker.Api.csproj" -c Release -o /app/publish
 
 FROM base AS final

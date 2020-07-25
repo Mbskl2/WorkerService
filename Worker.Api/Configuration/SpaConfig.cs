@@ -10,7 +10,7 @@ namespace Worker.Api.Configuration
         public static Action<SpaStaticFilesOptions> GetOptions()
         {
             return configuration => {
-                configuration.RootPath = "ClientApp / dist";
+                configuration.RootPath = "ClientApp/dist";
             };
         }
 

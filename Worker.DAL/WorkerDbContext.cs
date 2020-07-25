@@ -13,6 +13,7 @@ namespace Worker.DAL
         public WorkerDbContext(DbContextOptions<WorkerDbContext> options)
             : base(options)
         {
+            Database.EnsureCreated();
         }
     }
 }
