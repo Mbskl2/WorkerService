@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.SpaServices.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -46,7 +47,10 @@ namespace Worker.Api
             services.AddTransient<DistanceCalculator>();
             services.AddTransient<WorkerProfileFinder>();
 
+            services.AddSpaStaticFiles(SpaConfig.GetOptions());
         }
+
+        
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -58,7 +62,7 @@ namespace Worker.Api
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", Assembly.GetExecutingAssembly().FullName));
 
             app.UseHttpsRedirection();
-            app.UseRouting(); 
+            app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
@@ -66,7 +70,8 @@ namespace Worker.Api
                 endpoints.MapControllers();
                 endpoints.MapHealthChecks("/hc");
             });
-        }
 
+            app.UseSpaConfig(env.IsDevelopment());
+        }
     }
 }
