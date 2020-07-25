@@ -12,31 +12,31 @@ import Skill from '../shared/models/Skill';
 export class WorkerListComponent implements OnInit {
 
   workers: Array<WorkerProfile>;
-  newWorker: WorkerProfile = new WorkerProfile();
+  currentWorker: WorkerProfile;
   newSkill: Skill = new Skill();
 
   constructor(private workersService: WorkersService) { }
 
   ngOnInit(): void {
     this.initializeNewWorker()
-    this.workersService.getAll().subscribe(data => {
+    this.workersService.getAll().subscribe(data => { // TODO: Przed załadowaniem powinno być Loading...
       this.workers = data;
     });
   }
 
   initializeNewWorker(): void {
-    this.newWorker = new WorkerProfile();
-    this.newWorker.address = new Address();
-    this.newWorker.skills = new Array<Skill>(); // TODO: Pozwolić użytkownikowi wybrać z listy krajów
+    this.currentWorker = new WorkerProfile();
+    this.currentWorker.address = new Address(); // TODO: Pozwolić użytkownikowi wybrać z listy krajów
+    this.currentWorker.skills = new Array<Skill>(); 
   }
 
   createAndClear(worker: WorkerProfile): void {
     this.workersService.save(worker).subscribe(this.workers.push);
-    // this.initializeNewWorker(); // TODO: Odkomentować
+    this.initializeNewWorker();
   }
 
   addSkill(skill: Skill) {
-    this.newWorker.skills.push(skill);
+    this.currentWorker.skills.push(skill);
     this.newSkill = new Skill();
   }
 }

@@ -1,22 +1,22 @@
 <h2>Workers</h2>
-<ul>
-  <li *ngFor="let worker of workers">
-    &nbsp;<span>{{worker.name}}</span>
-  </li>
+<<ul>
+   <li *ngFor="let worker of workers">
+     {{worker.name}}
+   </li>
 </ul>
 
 <h2>New student</h2>
 <div id="new-worker-form">
-  <label>Name:</label> <input [(ngModel)]="newWorker.name" />
+  <label>Name:</label> <input [(ngModel)]="currentWorker.name" />
   <div id="address-form">
-    <label>Street:</label> <input [(ngModel)]="newWorker.address.street" />
-    <label>House number:</label> <input [(ngModel)]="newWorker.address.houseNumber" />
-    <label>City:</label> <input [(ngModel)]="newWorker.address.city" />
-    <label>Country:</label> <input [(ngModel)]="newWorker.address.country" />
+    <label>Street:</label> <input [(ngModel)]="currentWorker.address.street" />
+    <label>House number:</label> <input [(ngModel)]="currentWorker.address.houseNumber" />
+    <label>City:</label> <input [(ngModel)]="currentWorker.address.city" />
+    <label>Country:</label> <input [(ngModel)]="currentWorker.address.country" />
   </div>
   <div id="skills-form">
     <ul id="skill-list">
-      <li *ngFor="let skill of newWorker.skills">
+      <li *ngFor="let skill of currentWorker.skills">
         &nbsp;<span>{{skill.name}}</span>
       </li>
     </ul>
@@ -25,6 +25,6 @@
       <input [(ngModel)]="newSkill.name" />
       <button (click)="addSkill(newSkill)">Add</button>
     </div>
-    <button (click)="createAndClear(newWorker)">Add</button>
   </div>
+  <button (click)="createAndClear(currentWorker)">Add Worker!</button>
 </div>
