@@ -3,11 +3,9 @@ using System.Reflection;
 using AutoMapper;
 using Location;
 using Location.ResponseModels;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.SpaServices.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,11 +27,13 @@ namespace Worker.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAuthentication(AuthZeroConfig.GetDefaults())
-                .AddJwtBearer(AuthZeroConfig.GetJwtBearerOptions(Configuration));
             services.AddControllers();
             services.AddHealthChecks();
             services.AddSwaggerGen();
+            services.AddAuthentication(AuthZeroConfig.GetDefaults())
+                .AddJwtBearer(AuthZeroConfig.GetJwtBearerOptions(Configuration));
+            services.AddCors(CorsConfig.GetPolicy());
+
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddTransient<IApiKey, GoogleLocationApiKey>();
             services.AddHttpClient<GeocodingService>()
@@ -50,8 +50,6 @@ namespace Worker.Api
             services.AddSpaStaticFiles(SpaConfig.GetOptions());
         }
 
-        
-
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -63,6 +61,7 @@ namespace Worker.Api
 
             app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseCors();
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>

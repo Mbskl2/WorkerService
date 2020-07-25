@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import WorkerProfile from '../models/WorkerProfile';
 import Address from '../models/Address';
 import Skill from '../models/Skill';
 
+const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
+
 @Injectable()
 export default class WorkersService {
 
-  public BACKEND = 'http://localhost:9090'; // TODO: Przenieść do configa
+  public BACKEND = 'https://localhost:5001'; // TODO: Przenieść do configa
   public API = `${this.BACKEND}/api/workers`;
 
   constructor(private http: HttpClient) { }
@@ -37,9 +39,9 @@ export default class WorkersService {
 
   save(worker: WorkerProfile): Observable<WorkerProfile> {
     if (worker.workerProfileId) {
-      return this.http.put<WorkerProfile>(`${this.API}/${worker.workerProfileId}`, worker);
+      return this.http.put<WorkerProfile>(`${this.API}/${worker.workerProfileId}`, worker, httpOptions);
     } else {
-      return this.http.post<WorkerProfile>(this.API, worker);
+      return this.http.post<WorkerProfile>(this.API, worker, httpOptions);
     }
   }
 }

@@ -1,6 +1,30 @@
 <h2>Workers</h2>
 <ul>
-  <li *ngFor="let worker of skills">
+  <li *ngFor="let worker of workers">
     &nbsp;<span>{{worker.name}}</span>
   </li>
 </ul>
+
+<h2>New student</h2>
+<div id="new-worker-form">
+  <label>Name:</label> <input [(ngModel)]="newWorker.name" />
+  <div id="address-form">
+    <label>Street:</label> <input [(ngModel)]="newWorker.address.street" />
+    <label>House number:</label> <input [(ngModel)]="newWorker.address.houseNumber" />
+    <label>City:</label> <input [(ngModel)]="newWorker.address.city" />
+    <label>Country:</label> <input [(ngModel)]="newWorker.address.country" />
+  </div>
+  <div id="skills-form">
+    <ul id="skill-list">
+      <li *ngFor="let skill of newWorker.skills">
+        &nbsp;<span>{{skill.name}}</span>
+      </li>
+    </ul>
+    <div id="new-skill-form">
+      <label>New skill:</label>
+      <input [(ngModel)]="newSkill.name" />
+      <button (click)="addSkill(newSkill)">Add</button>
+    </div>
+    <button (click)="createAndClear(newWorker)">Add</button>
+  </div>
+</div>
