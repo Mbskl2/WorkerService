@@ -3,6 +3,8 @@ using System.Reflection;
 using AutoMapper;
 using Location;
 using Location.ResponseModels;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +28,8 @@ namespace Worker.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(AuthZeroConfig.GetDefaults())
+                .AddJwtBearer(AuthZeroConfig.GetJwtBearerOptions(Configuration));
             services.AddControllers();
             services.AddHealthChecks();
             services.AddSwaggerGen();
@@ -54,7 +58,8 @@ namespace Worker.Api
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", Assembly.GetExecutingAssembly().FullName));
 
             app.UseHttpsRedirection();
-            app.UseRouting();
+            app.UseRouting(); 
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
