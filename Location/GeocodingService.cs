@@ -26,21 +26,23 @@ namespace Location
 
         internal async Task<MapPoint> GetCoordinates(string addressString)
         {
-            var response = await CallGeocodingApi(addressString);
-            response.EnsureSuccessStatusCode();
-
-            using (var responseStream = await response.Content.ReadAsStreamAsync())
-            {
-                var responseModel = await Deserialize(responseStream);
-                var location = responseModel.Results.First().Geometry.Location;
-                return new MapPoint(location.Lat, location.Lng);
-            }
+            Response response = await GetResponse(addressString);
+            var location = response.Results.First().Geometry.Location;
+            return new MapPoint(location.Lat, location.Lng);
         }
 
         private Task<HttpResponseMessage> CallGeocodingApi(string addressString)
         {
             string requestUri = $@"/maps/api/geocode/json?address={addressString}&key={apiKey.Get()}";
             return Client.GetAsync(requestUri);
+        }
+        private async Task<Response> GetResponse(string addressString)
+        {
+            var response = await CallGeocodingApi(addressString);
+            response.EnsureSuccessStatusCode();
+
+            await using var responseStream = await response.Content.ReadAsStreamAsync();
+            return await Deserialize(responseStream);
         }
 
         private Task<Response> Deserialize(Stream responseStream)
