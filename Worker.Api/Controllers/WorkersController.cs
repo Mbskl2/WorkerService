@@ -58,7 +58,7 @@ namespace Worker.Api.Controllers
         public async Task<IActionResult> Post([FromBody] WorkerProfile worker)
         {
             await workerRepository.Save(worker);
-            return Accepted(worker);
+            return Accepted(worker); // TODO: Zwrócić go z wygenerowanym Id
         }
 
         [HttpPut("{id}")]
