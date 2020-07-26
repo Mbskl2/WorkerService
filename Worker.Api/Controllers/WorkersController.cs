@@ -27,7 +27,7 @@ namespace Worker.Api.Controllers
             return Ok(allWorkers);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = nameof(GetWorkerById))]
         public async Task<IActionResult> GetWorkerById(int id)
         {
             var worker = await workerRepository.Get(id);
@@ -36,7 +36,7 @@ namespace Worker.Api.Controllers
             return Ok(worker);
         }
 
-        [HttpGet]
+        [HttpGet("bySkills")]
         public async Task<IActionResult> GetWorkersWithMatchingSkills([FromQuery] string[] skills)
         {
             var skillList = skills.Select(s => new Skill() {Name = s}).ToList();
@@ -44,7 +44,7 @@ namespace Worker.Api.Controllers
             return Ok(workersWithMatchingSkills);
         }
 
-        [HttpGet]
+        [HttpGet("byLocation")]
         public async Task<IActionResult> GetWorkersLivingInRadiusOfLocation(
             double radiusInKm, string countryIsoCode, string city, string street, string houseNumber)
         {
@@ -58,8 +58,7 @@ namespace Worker.Api.Controllers
         public async Task<IActionResult> CreateWorker([FromBody] WorkerProfile worker)
         {
             var savedWorker = await workerRepository.Save(worker);
-            return CreatedAtRoute(
-                nameof(GetWorkerById), new { id = savedWorker.Id }, savedWorker);
+            return CreatedAtRoute(nameof(GetWorkerById), new { id = savedWorker.Id }, savedWorker);
         }
 
         [HttpPut("{id}")]
@@ -69,8 +68,7 @@ namespace Worker.Api.Controllers
             if (workerRepository.Get(id) == null)
                 return NotFound();
             var savedWorker = await workerRepository.Save(worker, id);
-            return CreatedAtRoute(
-                nameof(GetWorkerById), new { id = savedWorker.Id }, savedWorker);
+            return CreatedAtRoute(nameof(GetWorkerById), new { id = savedWorker.Id }, savedWorker);
         }
     }
 }

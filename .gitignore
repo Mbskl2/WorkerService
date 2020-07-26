@@ -339,3 +339,5 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 /Worker.Api/blogging.db
+/Worker.Api/blogging.db-shm
+/Worker.Api/blogging.db-wal

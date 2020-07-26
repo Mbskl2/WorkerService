@@ -1,9 +1,17 @@
 <h1>{{title}}</h1>
 
 <nav>
-  <a routerLink="/worker-list">Workers</a>
-  <a routerLink="/by-location-search">Search by location</a>
-  <a routerLink="/by-skill-search">Search by skills</a>
+  <ul>
+    <li>
+      <a routerLink="/worker-dashboard">Workers</a>
+    </li>
+    <li>
+      <a routerLink="/by-location-search">Search by location</a>
+    </li>
+    <li>
+      <a routerLink="/by-skill-search">Search by skills</a>
+    </li>
+  </ul>
 </nav>
 
 <router-outlet></router-outlet>

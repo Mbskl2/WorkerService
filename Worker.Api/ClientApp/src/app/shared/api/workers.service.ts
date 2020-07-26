@@ -19,13 +19,13 @@ export default class WorkersService {
     return this.http.get<Array<WorkerProfile>>(this.API);
   }
 
-  get(id: string): Observable<Array<WorkerProfile>> {
-    return this.http.get<Array<WorkerProfile>>(`${this.API}/${id}`);
+  get(id: string): Observable<WorkerProfile> {
+    return this.http.get<WorkerProfile>(`${this.API}/${id}`);
   }
 
   getBySkills(skills: Array<Skill>): Observable<Array<WorkerProfile>> {
     const skillString = skills.map(skill => { return `skills=${skill.name}` }).join('&');
-    return this.http.get<Array<WorkerProfile>>(`${this.API}?${skillString}`);
+    return this.http.get<Array<WorkerProfile>>(`${this.API}/bySkills?${skillString}`);
   }
 
   getByLocation(radiusInKm: number, address: Address): Observable<Array<WorkerProfile>> {
@@ -34,7 +34,7 @@ export default class WorkersService {
                       &city=${address.city}
                       &street=${address.street}
                       &houseNumber=${address.houseNumber}`;
-    return this.http.get<Array<WorkerProfile>>(`${this.API}?${params}`);
+    return this.http.get<Array<WorkerProfile>>(`${this.API}/byLocation?${params}`);
   }
 
   save(worker: WorkerProfile): Observable<WorkerProfile> {

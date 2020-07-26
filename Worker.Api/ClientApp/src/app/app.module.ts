@@ -8,14 +8,22 @@ import { AppComponent } from './app.component';
 import { WorkerListComponent } from './worker-list/worker-list.component';
 import WorkersService from './shared/api/workers.service';
 import { BySkillSearchComponent } from './by-skill-search/by-skill-search.component';
-import { ByLocationSearchComponent } from './by-location-search/by-location-search.component'
+import { ByLocationSearchComponent } from './by-location-search/by-location-search.component';
+import { WorkerDetailComponent } from './worker-detail/worker-detail.component';
+import { SkillListComponent } from './skill-list/skill-list.component';
+import { AddressDetailComponent } from './address-detail/address-detail.component';
+import { WorkerDashboardComponent } from './worker-dashboard/worker-dashboard.component'
 
 @NgModule({
   declarations: [
     AppComponent,
     WorkerListComponent,
     BySkillSearchComponent,
-    ByLocationSearchComponent
+    ByLocationSearchComponent,
+    WorkerDetailComponent,
+    SkillListComponent,
+    AddressDetailComponent,
+    WorkerDashboardComponent
   ],
   imports: [
     BrowserModule,

@@ -1,14 +1,9 @@
-<ul>
-  <li *ngFor="let worker of workers">
-    {{worker.name}}
-  </li>
-</ul>
+<div id="by-location-search">
+  <app-worker-list [workers]="workers"></app-worker-list>
 
-<div id="address-form">
-  <label>Street:</label> <input [(ngModel)]="address.street" />
-  <label>House number:</label> <input [(ngModel)]="address.houseNumber" />
-  <label>City:</label> <input [(ngModel)]="address.city" />
-  <label>Country:</label> <input [(ngModel)]="address.country" />
+  <div id="search-data">
+    <app-address-detail [address]="address"></app-address-detail>
+    <label>Max distance from the address [km]:</label> <input [(ngModel)]="radiusInKm" />
+  </div>
+  <button id="search-btn" (click)="search(radiusInKm, address)">Search</button>
 </div>
-<label>Max distance from the address [km]:</label> <input [(ngModel)]="radiusInKm"/>
-<button id="search-btn" (click)="search(radiusInKm, address)">Search!</button>

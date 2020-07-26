@@ -1,19 +1,8 @@
-<ul>
-  <li *ngFor="let worker of workers">
-    {{worker.name}}
-  </li>
-</ul>
+<div id="by-skill-search">
+  <app-worker-list [workers]="workers"></app-worker-list>
 
-<div id="skills-form">
-  <ul id="skill-list">
-    <li *ngFor="let skill of skills">
-      &nbsp;<span>{{skill.name}}</span>
-    </li>
-  </ul>
-  <div id="new-skill-form">
-    <label>New skill:</label>
-    <input [(ngModel)]="newSkill.name" />
-    <button (click)="addSkill(newSkill)">Add</button>
+  <div id="search-data">
+    <app-skill-list [skills]="skills"></app-skill-list>
+    <button id="search-btn" (click)="search(skills)">Search</button>
   </div>
 </div>
-<button id="search-btn" (click)="search(skills)">Search!</button>

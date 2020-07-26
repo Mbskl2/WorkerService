@@ -24,7 +24,7 @@ namespace Location
 
         private string CreateAddressString(Address a)
         {
-            var country = new RegionInfo(a.Country);
+            var country = new RegionInfo(a.Country.Trim());
             return $@"{a.HouseNumber} {a.Street} {a.City}, {country.EnglishName}";
         }
     }

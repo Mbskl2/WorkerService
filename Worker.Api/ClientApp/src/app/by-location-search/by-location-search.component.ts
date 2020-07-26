@@ -19,6 +19,5 @@ export class ByLocationSearchComponent {
   search(radiusInKm: number, address: Address): void {
     this.workersService.getByLocation(radiusInKm, address)
       .subscribe(data => { this.workers = data });
-    address = new Address();
   }
 }
