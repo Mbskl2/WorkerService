@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Worker.Api.Configuration.AuthZero;
 using Worker.Models;
 
 namespace Worker.Api.Controllers
@@ -20,6 +21,7 @@ namespace Worker.Api.Controllers
             this.workerFinder = workerFinder;
         }
 
+        [Authorize(AuthZeroPermissions.ReadWorkers)]
         [HttpGet]
         public async Task<IActionResult> GetAllWorkers()
         {
@@ -27,6 +29,7 @@ namespace Worker.Api.Controllers
             return Ok(allWorkers);
         }
 
+        [Authorize(AuthZeroPermissions.ReadWorkers)]
         [HttpGet("{id}", Name = nameof(GetWorkerById))]
         public async Task<IActionResult> GetWorkerById(int id)
         {
@@ -36,6 +39,7 @@ namespace Worker.Api.Controllers
             return Ok(worker);
         }
 
+        [Authorize(AuthZeroPermissions.SearchWorkers)]
         [HttpGet("bySkills")]
         public async Task<IActionResult> GetWorkersWithMatchingSkills([FromQuery] string[] skills)
         {
@@ -44,6 +48,7 @@ namespace Worker.Api.Controllers
             return Ok(workersWithMatchingSkills);
         }
 
+        [Authorize(AuthZeroPermissions.SearchWorkers)]
         [HttpGet("byLocation")]
         public async Task<IActionResult> GetWorkersLivingInRadiusOfLocation(
             double radiusInKm, string countryIsoCode, string city, string street, string houseNumber)
@@ -54,6 +59,7 @@ namespace Worker.Api.Controllers
             return Ok(workersInVicinity);
         }
 
+        [Authorize(AuthZeroPermissions.CreateWorkers)]
         [HttpPost]
         public async Task<IActionResult> CreateWorker([FromBody] WorkerProfile worker)
         {
@@ -61,6 +67,7 @@ namespace Worker.Api.Controllers
             return CreatedAtRoute(nameof(GetWorkerById), new { id = savedWorker.Id }, savedWorker);
         }
 
+        [Authorize(AuthZeroPermissions.ModifyWorkers)]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateWorker(int id, [FromBody] WorkerProfile worker)
         {

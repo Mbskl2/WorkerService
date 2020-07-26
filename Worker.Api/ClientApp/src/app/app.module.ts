@@ -13,7 +13,8 @@ import { WorkerDetailComponent } from './worker-detail/worker-detail.component';
 import { SkillListComponent } from './skill-list/skill-list.component';
 import { AddressDetailComponent } from './address-detail/address-detail.component';
 import { WorkerDashboardComponent } from './worker-dashboard/worker-dashboard.component';
-import { NavBarComponent } from './nav-bar/nav-bar.component'
+import { NavBarComponent } from './nav-bar/nav-bar.component';
+import { ProfileComponent } from './profile/profile.component'
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { NavBarComponent } from './nav-bar/nav-bar.component'
     SkillListComponent,
     AddressDetailComponent,
     WorkerDashboardComponent,
-    NavBarComponent
+    NavBarComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,

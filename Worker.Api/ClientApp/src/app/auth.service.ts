@@ -15,6 +15,7 @@ export class AuthService {
     createAuth0Client({
       domain: environment.AuthZeroDomain,
       client_id: environment.AuthZeroClientId,
+      audience: environment.AuthZeroApiId,
       redirect_uri: `${window.location.origin}`
     })
   ) as Observable<Auth0Client>).pipe(
@@ -122,6 +123,12 @@ export class AuthService {
         returnTo: `${window.location.origin}`
       });
     });
+  }
+
+  getTokenSilently$(options?): Observable<string> {
+    return this.auth0Client$.pipe(
+      concatMap((client: Auth0Client) => from(client.getTokenSilently(options)))
+    );
   }
 
 }

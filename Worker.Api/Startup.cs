@@ -15,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Worker.Api.Configuration;
+using Worker.Api.Configuration.AuthZero;
 using Worker.DAL;
 using Worker.Location;
 
@@ -34,8 +35,7 @@ namespace Worker.Api
             services.AddControllers();
             services.AddHealthChecks();
             services.AddSwaggerGen();
-            services.AddAuthentication(AuthZeroConfig.GetDefaults())
-                .AddJwtBearer(AuthZeroConfig.GetJwtBearerOptions(Configuration));
+            services.AddAuthZeroConfig(Configuration);
             services.AddCors(CorsConfig.GetPolicy());
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

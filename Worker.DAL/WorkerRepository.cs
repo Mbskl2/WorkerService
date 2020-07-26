@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -54,7 +55,7 @@ namespace Worker.DAL
         {
             Entities.WorkerProfile existingWorker = await GetExistingWorker(id);
             existingWorker.Name = newWorker.Name;
-            existingWorker.Address = mapper.Map<Entities.Address>(newWorker.Address);
+            CopyAddress(existingWorker.Address, newWorker.Address);
             existingWorker.Skills = newWorker.Skills;
         }
 
@@ -63,6 +64,14 @@ namespace Worker.DAL
             return dbContext.WorkerProfiles
                 .Include(x => x.Skills)
                 .FirstAsync(x => x.Id == existingId);
+        }
+
+        private void CopyAddress(Address existingAddress, Address newAddress)
+        {
+            existingAddress.Country = newAddress.Country;
+            existingAddress.City = newAddress.City;
+            existingAddress.Street = newAddress.Street;
+            existingAddress.HouseNumber = newAddress.HouseNumber;
         }
     }
 }
