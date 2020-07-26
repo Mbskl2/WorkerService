@@ -9,7 +9,7 @@ using Worker.DAL;
 namespace Worker.DAL.Migrations
 {
     [DbContext(typeof(WorkerDbContext))]
-    [Migration("20200724203645_InitialMigration")]
+    [Migration("20200726111820_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,47 +20,52 @@ namespace Worker.DAL.Migrations
 
             modelBuilder.Entity("Worker.DAL.Entities.Address", b =>
                 {
-                    b.Property<int>("AddressId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("City")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(90);
 
                     b.Property<string>("Country")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(2);
 
                     b.Property<string>("HouseNumber")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(10);
 
                     b.Property<string>("Street")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(100);
 
-                    b.HasKey("AddressId");
+                    b.HasKey("Id");
 
                     b.ToTable("Addresses");
                 });
 
             modelBuilder.Entity("Worker.DAL.Entities.Skill", b =>
                 {
-                    b.Property<int>("SkillId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(40);
 
-                    b.Property<int?>("Id")
+                    b.Property<int?>("WorkerProfileId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("SkillId");
+                    b.HasKey("Id");
 
-                    b.HasIndex("Id");
+                    b.HasIndex("WorkerProfileId");
 
                     b.ToTable("Skills");
                 });
@@ -76,7 +81,8 @@ namespace Worker.DAL.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(200);
 
                     b.HasKey("Id");
 
@@ -89,7 +95,7 @@ namespace Worker.DAL.Migrations
                 {
                     b.HasOne("Worker.DAL.Entities.WorkerProfile", null)
                         .WithMany("Skills")
-                        .HasForeignKey("Id");
+                        .HasForeignKey("WorkerProfileId");
                 });
 
             modelBuilder.Entity("Worker.DAL.Entities.WorkerProfile", b =>

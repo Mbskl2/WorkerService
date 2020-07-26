@@ -70,12 +70,7 @@ namespace WorkerTests.Fakes
             throw new System.NotImplementedException();
         }
 
-        public Task Save(WorkerProfile worker)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task Save(int id, WorkerProfile worker)
+        public Task<WorkerProfile> Save(WorkerProfile worker, int id = 0)
         {
             throw new System.NotImplementedException();
         }
