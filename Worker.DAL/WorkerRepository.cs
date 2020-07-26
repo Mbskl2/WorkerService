@@ -32,7 +32,7 @@ namespace Worker.DAL
             var worker =  await dbContext.WorkerProfiles
                 .Include(x => x.Address)
                 .Include(x => x.Skills)
-                .FirstOrDefaultAsync(x => x.WorkerProfileId == id);
+                .FirstOrDefaultAsync(x => x.Id == id);
             if (worker == null)
                 return null;
             return mapper.Map<Models.WorkerProfile>(worker);
@@ -40,7 +40,7 @@ namespace Worker.DAL
         
         public async Task<Models.WorkerProfile> Save(Models.WorkerProfile worker, int id = 0)
         {
-            worker.WorkerProfileId = id;
+            worker.Id = id;
             var entity = mapper.Map<Entities.WorkerProfile>(worker);
             if (id == 0)
                 dbContext.WorkerProfiles.Add(entity);
@@ -62,7 +62,7 @@ namespace Worker.DAL
         {
             return dbContext.WorkerProfiles
                 .Include(x => x.Skills)
-                .FirstAsync(x => x.WorkerProfileId == existingId);
+                .FirstAsync(x => x.Id == existingId);
         }
     }
 }

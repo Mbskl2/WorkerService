@@ -58,14 +58,14 @@ namespace Worker.DAL.Migrations
                         name: "FK_Skills_WorkerProfiles_WorkerProfileId",
                         column: x => x.WorkerProfileId,
                         principalTable: "WorkerProfiles",
-                        principalColumn: "WorkerProfileId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Skills_WorkerProfileId",
                 table: "Skills",
-                column: "WorkerProfileId");
+                column: "Id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_WorkerProfiles_AddressId",

@@ -38,8 +38,8 @@ export default class WorkersService {
   }
 
   save(worker: WorkerProfile): Observable<WorkerProfile> {
-    if (worker.workerProfileId) {
-      return this.http.put<WorkerProfile>(`${this.API}/${worker.workerProfileId}`, worker, httpOptions);
+    if (worker.id) {
+      return this.http.put<WorkerProfile>(`${this.API}/${worker.id}`, worker, httpOptions);
     } else {
       return this.http.post<WorkerProfile>(this.API, worker, httpOptions);
     }

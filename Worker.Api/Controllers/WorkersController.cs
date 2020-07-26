@@ -59,18 +59,18 @@ namespace Worker.Api.Controllers
         {
             var savedWorker = await workerRepository.Save(worker);
             return CreatedAtRoute(
-                nameof(GetWorkerById), new { id = savedWorker.WorkerProfileId }, savedWorker);
+                nameof(GetWorkerById), new { id = savedWorker.Id }, savedWorker);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateWorker(int id, [FromBody] WorkerProfile worker)
         {
-            worker.WorkerProfileId = id;
+            worker.Id = id;
             if (workerRepository.Get(id) == null)
                 return NotFound();
             var savedWorker = await workerRepository.Save(worker, id);
             return CreatedAtRoute(
-                nameof(GetWorkerById), new { id = savedWorker.WorkerProfileId }, savedWorker);
+                nameof(GetWorkerById), new { id = savedWorker.Id }, savedWorker);
         }
     }
 }

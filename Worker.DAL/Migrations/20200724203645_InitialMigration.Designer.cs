@@ -55,19 +55,19 @@ namespace Worker.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("WorkerProfileId")
+                    b.Property<int?>("Id")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("SkillId");
 
-                    b.HasIndex("WorkerProfileId");
+                    b.HasIndex("Id");
 
                     b.ToTable("Skills");
                 });
 
             modelBuilder.Entity("Worker.DAL.Entities.WorkerProfile", b =>
                 {
-                    b.Property<int>("WorkerProfileId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -78,7 +78,7 @@ namespace Worker.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("WorkerProfileId");
+                    b.HasKey("Id");
 
                     b.HasIndex("AddressId");
 
@@ -89,7 +89,7 @@ namespace Worker.DAL.Migrations
                 {
                     b.HasOne("Worker.DAL.Entities.WorkerProfile", null)
                         .WithMany("Skills")
-                        .HasForeignKey("WorkerProfileId");
+                        .HasForeignKey("Id");
                 });
 
             modelBuilder.Entity("Worker.DAL.Entities.WorkerProfile", b =>
