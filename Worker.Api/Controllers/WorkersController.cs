@@ -21,15 +21,16 @@ namespace Worker.Api.Controllers
             this.workerFinder = workerFinder;
         }
 
-        [Authorize(AuthZeroPermissions.ReadWorkers)]
+        [Authorize(AuthZeroPermissions.ReadOwnWorkers)]
         [HttpGet]
         public async Task<IActionResult> GetAllWorkers()
         {
+            //ControllerContext.HttpContext.User.Identity.Name; // TODO: Jeśli admin readAll:workers to przekazać null. Inaczej creatora
             var allWorkers = await workerRepository.Get();
             return Ok(allWorkers);
         }
 
-        [Authorize(AuthZeroPermissions.ReadWorkers)]
+        [Authorize(AuthZeroPermissions.ReadOwnWorkers)]
         [HttpGet("{id}", Name = nameof(GetWorkerById))]
         public async Task<IActionResult> GetWorkerById(int id)
         {
@@ -63,7 +64,7 @@ namespace Worker.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateWorker([FromBody] WorkerProfile worker)
         {
-            var savedWorker = await workerRepository.Save(worker);
+            var savedWorker = await workerRepository.Save(worker, ""); // TODO: Zmienić ""
             return CreatedAtRoute(nameof(GetWorkerById), new { id = savedWorker.Id }, savedWorker);
         }
 
@@ -74,7 +75,7 @@ namespace Worker.Api.Controllers
             worker.Id = id;
             if (workerRepository.Get(id) == null)
                 return NotFound();
-            var savedWorker = await workerRepository.Save(worker, id);
+            var savedWorker = await workerRepository.Save(worker, "", id); // tODO: Zmienić ""
             return CreatedAtRoute(nameof(GetWorkerById), new { id = savedWorker.Id }, savedWorker);
         }
     }

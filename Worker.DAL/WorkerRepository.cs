@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -19,36 +19,51 @@ namespace Worker.DAL
             this.mapper = mapper;
         }
 
-        public async Task<IEnumerable<Models.WorkerProfile>> Get()
+        public async Task<IEnumerable<Models.WorkerProfile>> Get(string? creator = null)
         {
-            var workers = await dbContext.WorkerProfiles
+            IQueryable<Entities.WorkerProfile> workers = dbContext.WorkerProfiles
                 .Include(x => x.Address)
-                .Include(x => x.Skills)
-                .ToListAsync();
-            return workers.Select(w => mapper.Map<Models.WorkerProfile>(w));
+                .Include(x => x.Skills);
+            if (Exists(creator))
+                workers = workers.Where(w => w.Creator == creator);
+            var listOfWorkers = await workers.ToListAsync();
+            return listOfWorkers.Select(w => mapper.Map<Models.WorkerProfile>(w));
         }
 
-        public async Task<Models.WorkerProfile> Get(int id)
+
+        public async Task<Models.WorkerProfile?> Get(int id, string? creator = null)
         {
             var worker =  await dbContext.WorkerProfiles
                 .Include(x => x.Address)
                 .Include(x => x.Skills)
                 .FirstOrDefaultAsync(x => x.Id == id);
-            if (worker == null)
+            if (worker == null || BelongsToAnotherCreator(worker, creator))
                 return null;
             return mapper.Map<Models.WorkerProfile>(worker);
         }
-        
-        public async Task<Models.WorkerProfile> Save(Models.WorkerProfile worker, int id = 0)
+
+        public async Task<Models.WorkerProfile> Save(Models.WorkerProfile worker, string creator, int id = 0)
         {
             worker.Id = id;
             var entity = mapper.Map<Entities.WorkerProfile>(worker);
+            entity.Creator = creator;
             if (id == 0)
-                dbContext.WorkerProfiles.Add(entity);
+                await dbContext.WorkerProfiles.AddAsync(entity);
             else
                 await CopyToExistingEntity(id, entity);
             await dbContext.SaveChangesAsync();
             return mapper.Map<Models.WorkerProfile>(entity);
+        }
+        private bool Exists(string? creator)
+        {
+            return !String.IsNullOrWhiteSpace(creator);
+        }
+
+        private bool BelongsToAnotherCreator(Entities.WorkerProfile worker, string? creator)
+        {
+            if (Exists(creator))
+                return worker.Creator != creator;
+            return false;
         }
 
         private async Task CopyToExistingEntity(int id, WorkerProfile newWorker)

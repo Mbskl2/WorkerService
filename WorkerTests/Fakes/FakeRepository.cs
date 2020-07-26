@@ -7,7 +7,7 @@ namespace WorkerTests.Fakes
 {
     class FakeRepository : IWorkerRepository
     {
-        public Task<IEnumerable<WorkerProfile>> Get()
+        public Task<IEnumerable<WorkerProfile>> Get(string creator=null)
         {
             IEnumerable<WorkerProfile> workers =  new List<WorkerProfile>
             {
@@ -65,12 +65,12 @@ namespace WorkerTests.Fakes
             return Task.FromResult(workers);
         }
 
-        public Task<WorkerProfile> Get(int id)
+        public Task<WorkerProfile> Get(int id, string creator=null)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<WorkerProfile> Save(WorkerProfile worker, int id = 0)
+        public Task<WorkerProfile> Save(WorkerProfile worker, string creator, int id = 0)
         {
             throw new System.NotImplementedException();
         }

@@ -21,7 +21,8 @@ namespace Worker.Api.Configuration.AuthZero
                 .AddJwtBearer(AuthZeroConfig.GetJwtBearerOptions(domain, audience));
             services.AddAuthorization(options =>
             {
-                options.AddPolicy(ReadWorkers, policy => policy.Requirements.Add(new PermissionRequirement(ReadWorkers, domain)));
+                options.AddPolicy(ReadOwnWorkers, policy => policy.Requirements.Add(new PermissionRequirement(ReadOwnWorkers, domain)));
+                options.AddPolicy(ReadAllWorkers, policy => policy.Requirements.Add(new PermissionRequirement(ReadAllWorkers, domain)));
                 options.AddPolicy(CreateWorkers, policy => policy.Requirements.Add(new PermissionRequirement(CreateWorkers, domain)));
                 options.AddPolicy(SearchWorkers, policy => policy.Requirements.Add(new PermissionRequirement(SearchWorkers, domain)));
                 options.AddPolicy(ModifyWorkers, policy => policy.Requirements.Add(new PermissionRequirement(ModifyWorkers, domain)));

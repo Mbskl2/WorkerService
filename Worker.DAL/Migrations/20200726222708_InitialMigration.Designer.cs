@@ -9,7 +9,7 @@ using Worker.DAL;
 namespace Worker.DAL.Migrations
 {
     [DbContext(typeof(WorkerDbContext))]
-    [Migration("20200726111820_InitialMigration")]
+    [Migration("20200726222708_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -78,6 +78,11 @@ namespace Worker.DAL.Migrations
 
                     b.Property<int>("AddressId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("Creator")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(100);
 
                     b.Property<string>("Name")
                         .IsRequired()

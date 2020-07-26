@@ -29,7 +29,8 @@ namespace Worker.DAL.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(maxLength: 200, nullable: false),
-                    AddressId = table.Column<int>(nullable: false)
+                    AddressId = table.Column<int>(nullable: false),
+                    Creator = table.Column<string>(maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {

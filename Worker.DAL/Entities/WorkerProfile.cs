@@ -12,5 +12,7 @@ namespace Worker.DAL.Entities
         public string Name { get; set; }
         public Address Address { get; set; }
         public IList<Skill> Skills { get; set; }
+        [MaxLength(100)]
+        public string Creator { get; set; }
     }
 }
