@@ -21,14 +21,14 @@ namespace Worker.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetAllWorkers()
         {
             var allWorkers = await workerRepository.Get();
             return Ok(allWorkers);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> GetWorkerById(int id)
         {
             var worker = await workerRepository.Get(id);
             if (worker == null)
@@ -36,16 +36,16 @@ namespace Worker.Api.Controllers
             return Ok(worker);
         }
 
-        [HttpGet("bySkills")]
-        public async Task<IActionResult> Get([FromQuery] string[] skills)
+        [HttpGet]
+        public async Task<IActionResult> GetWorkersWithMatchingSkills([FromQuery] string[] skills)
         {
             var skillList = skills.Select(s => new Skill() {Name = s}).ToList();
             var workersWithMatchingSkills =  await workerFinder.FindBySkills(skillList);
             return Ok(workersWithMatchingSkills);
         }
 
-        [HttpGet("byLocation")]
-        public async Task<IActionResult> Get(
+        [HttpGet]
+        public async Task<IActionResult> GetWorkersLivingInRadiusOfLocation(
             double radiusInKm, string countryIsoCode, string city, string street, string houseNumber)
         {
             var address = new Address()
@@ -55,20 +55,22 @@ namespace Worker.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] WorkerProfile worker)
+        public async Task<IActionResult> CreateWorker([FromBody] WorkerProfile worker)
         {
-            await workerRepository.Save(worker);
-            return Accepted(worker); // TODO: Zwrócić go z wygenerowanym Id
+            var savedWorker = await workerRepository.Save(worker);
+            return CreatedAtRoute(
+                nameof(GetWorkerById), new { id = savedWorker.WorkerProfileId }, savedWorker);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] WorkerProfile worker)
+        public async Task<IActionResult> UpdateWorker(int id, [FromBody] WorkerProfile worker)
         {
             worker.WorkerProfileId = id;
             if (workerRepository.Get(id) == null)
                 return NotFound();
-            await workerRepository.Save(id, worker);
-            return Accepted(worker);
+            var savedWorker = await workerRepository.Save(worker, id);
+            return CreatedAtRoute(
+                nameof(GetWorkerById), new { id = savedWorker.WorkerProfileId }, savedWorker);
         }
     }
 }
