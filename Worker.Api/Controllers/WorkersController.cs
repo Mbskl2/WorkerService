@@ -6,7 +6,7 @@ using Worker.Models;
 
 namespace Worker.Api.Controllers
 {
-    //[Authorize] // TODO: Odkomentować
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class WorkersController : ControllerBase

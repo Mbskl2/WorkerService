@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Worker.Api.Configuration
 {
@@ -12,7 +14,11 @@ namespace Worker.Api.Configuration
             return options =>
             {
                 options.Authority = $"https://{configuration["Auth0:Domain"]}/";
-                options.Audience = configuration["Auth0:Audience"];
+                options.Audience = configuration["Auth0:ApiIdentifier"];
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    NameClaimType = ClaimTypes.NameIdentifier
+                };
             };
         }
 

@@ -16,7 +16,6 @@ namespace Worker.Api.Configuration
 
         public static void UseSpaConfig(this IApplicationBuilder app, bool isDevelopment)
         {
-            app.UseStaticFiles();
             app.UseSpaStaticFiles();
             app.UseSpa(spa =>
             {

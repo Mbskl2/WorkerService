@@ -21,6 +21,6 @@ export class WorkerDashboardComponent implements OnInit {
   }
 
   save(worker: WorkerProfile): void {
-    this.workersService.save(worker).subscribe(this.workers.push); // TODO: Nowy worker nie pokazuje się w worker-list
+    this.workersService.save(worker).subscribe(this.workers.push);
   }
 }

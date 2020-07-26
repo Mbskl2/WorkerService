@@ -5,7 +5,7 @@ namespace Worker.Location
 {
     public class DistanceCalculator
     {
-        private static double RadiusOfEarthInKm = 6371.0;
+        private const double RadiusOfEarthInKm = 6371.0;
         public double CalculateInKm(MapPoint src, MapPoint dst)
         {
             var dLat = DegreesToRadians(dst.Latitude - src.Latitude);
