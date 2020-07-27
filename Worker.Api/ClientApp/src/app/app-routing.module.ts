@@ -1,4 +1,3 @@
-/// <reference path="worker-list/worker-list.component.ts" />
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';

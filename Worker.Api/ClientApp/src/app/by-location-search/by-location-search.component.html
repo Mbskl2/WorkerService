@@ -1,9 +1,12 @@
 <div id="by-location-search">
+  <p *ngIf="error">Error: {{error}}</p>
+
   <app-worker-list [workers]="workers"></app-worker-list>
 
-  <div id="search-data">
+  <form id="search-data">
     <app-address-detail [address]="address"></app-address-detail>
-    <label>Max distance from the address [km]:</label> <input [(ngModel)]="radiusInKm" />
-  </div>
+    <label>Max distance from the address [km]:</label>
+    <input [(ngModel)]="radiusInKm" name="radius" />
+  </form>
   <button id="search-btn" (click)="search(radiusInKm, address)">Search</button>
 </div>

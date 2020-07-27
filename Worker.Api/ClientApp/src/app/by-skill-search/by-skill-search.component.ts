@@ -13,12 +13,18 @@ export class BySkillSearchComponent {
   workers: Array<WorkerProfile> = new Array<WorkerProfile>();
   skills: Array<Skill> = new Array<Skill>();
   newSkill: Skill = new Skill();
+  error: string;
 
   constructor(private workersService: WorkersService) { }
 
   search(skills: Array<Skill>): void {
     this.workersService.getBySkills(skills)
-      .subscribe(data => { this.workers = data });
+      .subscribe(
+        data => { 
+          this.workers = data
+          this.error = null;
+        },
+        error => { this.error = error.message });
     this.skills = new Array<Skill>();
   }
 

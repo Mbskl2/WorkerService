@@ -11,16 +11,25 @@ export class WorkerDashboardComponent implements OnInit {
 
   workers: Array<WorkerProfile>;
   selectedWorker: WorkerProfile;
+  error: string;
 
   constructor(private workersService: WorkersService) { }
 
   ngOnInit(): void {
-    this.workersService.getAll().subscribe(data => { // TODO: Przed załadowaniem powinno być Loading...
-      this.workers = data;
-    });
+    this.workersService.getAll().subscribe(data => { 
+          this.workers = data
+          this.error = null;
+        },
+        error => { this.error = error.error.title }
+    );
   }
 
   save(worker: WorkerProfile): void {
-    this.workersService.save(worker).subscribe(this.workers.push);
+    this.workersService.save(worker).subscribe(data => {
+      this.workers.push(data);
+      this.error = null;
+    },
+    error => {this.error = error.error.title}
+    );
   }
 }

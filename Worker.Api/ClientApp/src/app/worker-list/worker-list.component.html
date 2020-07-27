@@ -1,5 +1,6 @@
 <div id="worker-list">
   <h2>Workers</h2>
+  <p>Select on to see the details.</p>
   <ul>
     <li *ngFor="let worker of workers">
       <div (click)="select(worker)">{{worker.name}}</div>

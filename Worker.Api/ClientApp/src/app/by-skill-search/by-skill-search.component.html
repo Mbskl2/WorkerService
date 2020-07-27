@@ -1,4 +1,6 @@
 <div id="by-skill-search">
+  <p *ngIf="error">Error: {{error}}</p>
+
   <app-worker-list [workers]="workers"></app-worker-list>
 
   <div id="search-data">

@@ -1,3 +1,5 @@
 <div id="worker-dashboard">
-  <app-worker-list [workers]="workers" [areNewAllowed]="true" (saveAccepted)="save($event)"></app-worker-list>
+  <p *ngIf="error">Error: {{error}}</p>
+  <p *ngIf="!workers">Loading data...</p>
+  <app-worker-list [workers]="workers" [areNewAllowed]="true" (saveAccepted)="save($event)" *ngIf="workers"></app-worker-list>
 </div>

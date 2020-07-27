@@ -1,10 +1,12 @@
-<div id="worker-detail">
-  <h2>New worker</h2>
-  <div id="new-worker-form" *ngIf="worker">
-    <label>Name:</label> <input [(ngModel)]="worker.name" />
-    <app-address-detail [address]="worker.address"></app-address-detail>
-    <app-skill-list [skills]="worker.skills"></app-skill-list>
-    <button (click)="saveAndClear(worker)">Save Worker</button>
+<div id="worker-detail" name="worker-detail">
+  <div id="worker-editor" *ngIf="worker">
+    <h2>Worker editor</h2>
+    <form id="new-worker-form">
+      <label>Name:</label> <input [(ngModel)]="worker.name" name="name"/>
+      <app-address-detail [address]="worker.address"></app-address-detail>
+      <app-skill-list [skills]="worker.skills"></app-skill-list>
+      <button (click)="saveAndClear(worker)" *ngIf="areNewAllowed">Save Worker</button>
+    </form>
   </div>
   <button (click)="clear()" *ngIf="areNewAllowed">New Worker</button>
 </div>
