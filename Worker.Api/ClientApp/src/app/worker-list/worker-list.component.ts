@@ -18,8 +18,6 @@ export class WorkerListComponent {
   }
 
   saveAcceptedHandle(worker: WorkerProfile): void {
-    if (!this.workers.includes(worker))
-      this.workers.push(worker);
     this.saveAccepted.emit(worker);
   }
 }

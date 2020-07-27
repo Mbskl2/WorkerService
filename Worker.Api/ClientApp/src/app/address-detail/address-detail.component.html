@@ -3,9 +3,6 @@
     <label>Street:</label> <input [(ngModel)]="address.street" name="street"/>
     <label>House number:</label> <input [(ngModel)]="address.houseNumber" name="houseNumber" />
     <label>City:</label> <input [(ngModel)]="address.city" name="city" />
-    <label>Country:</label>
-    <select class="form-control" id="countries" required>
-      <option *ngFor="let code of countryIsoCodes" ([ngModel])="address.country" name="country">{{code}}</option>
-    </select>
+    <label>Country ISO code:</label> <input [(ngModel)]="address.country" name="contry" />
   </form>
 </div>

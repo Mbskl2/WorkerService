@@ -8,8 +8,11 @@ import Address from '../shared/models/Address';
 })
 export class AddressDetailComponent {
 
-  countryIsoCodes = ["PL", "FR", "CH", "DE", "IT", "CZ"]
+  countryIsoCodes = ["PL", "FR", "CH", "DE", "IT", "CZ"];
 
-  @Input() address: Address; // TODO: Pozwolić użytkownikowi wybrać z listy krajów
+  @Input() address: Address;
 
+  changeCountry(code: string): void {
+    this.address.country = code;
+  }
 }

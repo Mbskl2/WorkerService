@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Worker.Api.Configuration.AuthZero;
 using Worker.Models;
 
@@ -14,19 +15,23 @@ namespace Worker.Api.Controllers
     {
         private readonly IWorkerRepository workerRepository;
         private readonly WorkerProfileFinder workerFinder;
+        private readonly IConfiguration configuration;
 
-        public WorkersController(IWorkerRepository workerRepository, WorkerProfileFinder workerFinder)
+        public WorkersController(
+            IWorkerRepository workerRepository,
+            WorkerProfileFinder workerFinder,
+            IConfiguration configuration)
         {
             this.workerRepository = workerRepository;
             this.workerFinder = workerFinder;
+            this.configuration = configuration;
         }
 
         [Authorize(AuthZeroPermissions.ReadOwnWorkers)]
         [HttpGet]
         public async Task<IActionResult> GetAllWorkers()
         {
-            //ControllerContext.HttpContext.User.Identity.Name; // TODO: Jeśli admin readAll:workers to przekazać null. Inaczej creatora
-            var allWorkers = await workerRepository.Get();
+            var allWorkers = await workerRepository.Get(GetReader());
             return Ok(allWorkers);
         }
 
@@ -34,7 +39,7 @@ namespace Worker.Api.Controllers
         [HttpGet("{id}", Name = nameof(GetWorkerById))]
         public async Task<IActionResult> GetWorkerById(int id)
         {
-            var worker = await workerRepository.Get(id);
+            var worker = await workerRepository.Get(id, GetReader());
             if (worker == null)
                 return NotFound();
             return Ok(worker);
@@ -64,7 +69,7 @@ namespace Worker.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateWorker([FromBody] WorkerProfile worker)
         {
-            var savedWorker = await workerRepository.Save(worker, ""); // TODO: Zmienić ""
+            var savedWorker = await workerRepository.Save(worker, GetCreator());
             return CreatedAtRoute(nameof(GetWorkerById), new { id = savedWorker.Id }, savedWorker);
         }
 
@@ -75,8 +80,23 @@ namespace Worker.Api.Controllers
             worker.Id = id;
             if (workerRepository.Get(id) == null)
                 return NotFound();
-            var savedWorker = await workerRepository.Save(worker, "", id); // tODO: Zmienić ""
+            var savedWorker = await workerRepository.Save(worker, GetCreator(), id);
             return CreatedAtRoute(nameof(GetWorkerById), new { id = savedWorker.Id }, savedWorker);
+        }
+
+        private string GetCreator()
+        {
+            return ControllerContext.HttpContext.User.Identity.Name ?? "no user";
+        }
+
+        private string? GetReader()
+        {
+            var domain = $"https://{configuration["Auth0:Domain"]}/";
+            var canReadAll = ControllerContext.HttpContext.User.Claims.Any(
+                c => c.Issuer == domain && c.Value == AuthZeroPermissions.ReadAllWorkers);
+            if (canReadAll)
+                return null;
+            return ControllerContext.HttpContext.User.Identity.Name;
         }
     }
 }

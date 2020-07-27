@@ -16,8 +16,8 @@ export class WorkerDashboardComponent implements OnInit {
   constructor(private workersService: WorkersService) { }
 
   ngOnInit(): void {
-    this.workersService.getAll().subscribe(data => { 
-          this.workers = data
+    this.workersService.getAll().subscribe(data => {
+        this.workers = data;
           this.error = null;
         },
         error => { this.error = error.error.title }
@@ -26,7 +26,7 @@ export class WorkerDashboardComponent implements OnInit {
 
   save(worker: WorkerProfile): void {
     this.workersService.save(worker).subscribe(data => {
-      this.workers.push(data);
+      this.workers.push(worker);
       this.error = null;
     },
     error => {this.error = error.error.title}
