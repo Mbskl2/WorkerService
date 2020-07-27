@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Worker.Api.Configuration;
 using Worker.Api.Configuration.AuthZero;
+using Worker.Api.Configuration.ErrorHandling;
 using Worker.DAL;
 using Worker.Location;
 
@@ -59,6 +60,7 @@ namespace Worker.Api
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
 
+            app.UseErrorHandlerConfig();
             app.UseSwagger();
             app.UseSwaggerUI(options =>
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", Assembly.GetExecutingAssembly().FullName));
