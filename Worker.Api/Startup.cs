@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -33,7 +34,11 @@ namespace Worker.Api
         {
             services.AddControllers();
             services.AddHealthChecks();
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(c =>
+            {
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml");
+                c.IncludeXmlComments(xmlPath);
+            });
             services.AddAuthZeroConfig(Configuration);
             services.AddCors(CorsConfig.GetPolicy());
 
