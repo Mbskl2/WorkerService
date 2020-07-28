@@ -4,8 +4,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Location;
 using Location.ResponseModels;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;

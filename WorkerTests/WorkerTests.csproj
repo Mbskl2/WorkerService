@@ -16,8 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Location\Location.csproj" />
-    <ProjectReference Include="..\Worker.DAL\Worker.DAL.csproj" />
     <ProjectReference Include="..\Worker\Worker.csproj" />
   </ItemGroup>
 
