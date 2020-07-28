@@ -1,19 +1,25 @@
-<nav>
-  <header>
-    <button (click)="auth.login()" *ngIf="!auth.loggedIn">Log In</button>
-    <button (click)="auth.logout()" *ngIf="auth.loggedIn">Log Out</button>
-    <a routerLink="/">Home</a>&nbsp;
-    <a routerLink="profile" *ngIf="auth.loggedIn">Profile</a>
-  </header>
-  <ul>
-    <li>
-      <a routerLink="/worker-dashboard">Workers</a>
-    </li>
-    <li>
-      <a routerLink="/by-location-search">Search by location</a>
-    </li>
-    <li>
-      <a routerLink="/by-skill-search">Search by skills</a>
-    </li>
-  </ul>
-</nav>
+<header>
+  <nav class="nav nav-masthead justify-content-center">
+
+    <button (click)="auth.login()" *ngIf="!auth.loggedIn" class="btn btn-primary btn-lg btn-block">Log In</button>
+    <button (click)="auth.logout()" *ngIf="auth.loggedIn" class="btn btn-primary btn-lg">Log Out</button>
+
+    <ul class="list-inline">
+      <li class="list-inline-item">
+        <a routerLink="/">Home</a>
+      </li>
+      <li class="list-inline-item">
+        <a routerLink="profile" *ngIf="auth.loggedIn">Profile</a>
+      </li>
+      <li class="list-inline-item">
+        <a routerLink="/worker-dashboard">Workers</a>
+      </li>
+      <li class="list-inline-item">
+        <a routerLink="/by-location-search">Search by location</a>
+      </li>
+      <li class="list-inline-item">
+        <a routerLink="/by-skill-search">Search by skills</a>
+      </li>
+    </ul>
+  </nav>
+</header>

@@ -2,11 +2,11 @@
   <div id="worker-editor" *ngIf="worker">
     <h2>Worker editor</h2>
     <form id="new-worker-form">
-      <label>Name:</label> <input [(ngModel)]="worker.name" name="name"/>
+      <label>Name:</label> <input class="form-control" [(ngModel)]="worker.name" name="name"/>
       <app-address-detail [address]="worker.address"></app-address-detail>
       <app-skill-list [skills]="worker.skills"></app-skill-list>
-      <button (click)="saveAndClear(worker)" *ngIf="areNewAllowed">Save Worker</button>
+      <button class="btn btn-primary btn-lg" (click)="saveAndClear(worker)" *ngIf="areNewAllowed">Save Worker</button>
     </form>
   </div>
-  <button (click)="clear()" *ngIf="areNewAllowed">New Worker</button>
+  <button class="btn btn-primary btn-lg" (click)="clear()" *ngIf="areNewAllowed">New Worker</button>
 </div>

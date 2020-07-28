@@ -1,13 +1,13 @@
 <div id="skills-form">
   <h2>Skills</h2>
-  <ul id="skill-list">
-    <li *ngFor="let skill of skills">
+  <ul id="skill-list" class="list-group">
+    <li *ngFor="let skill of skills" class="list-group-item">
       {{skill.name}}
     </li>
   </ul>
   <form id="new-skill-form">
     <label>New skill:</label>
-    <input [(ngModel)]="newSkill.name" name="name"/>
+    <input class="form-control" [(ngModel)]="newSkill.name" name="name"/>
     <button (click)="addSkill(newSkill)">Add</button>
   </form>
 </div>

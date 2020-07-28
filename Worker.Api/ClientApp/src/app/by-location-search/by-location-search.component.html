@@ -6,7 +6,7 @@
   <form id="search-data">
     <app-address-detail [address]="address"></app-address-detail>
     <label>Max distance from the address [km]:</label>
-    <input [(ngModel)]="radiusInKm" name="radius" />
+    <input class="form-control" [(ngModel)]="radiusInKm" name="radius" />
   </form>
-  <button id="search-btn" (click)="search(radiusInKm, address)">Search</button>
+  <button id="search-btn" class="btn btn-primary btn-lg btn-block" (click)="search(radiusInKm, address)">Search</button>
 </div>

@@ -12,7 +12,7 @@ const routes: Routes = [
   { path: 'worker-dashboard', component: WorkerDashboardComponent, canActivate: [AuthGuard] },
   { path: 'by-location-search', component: ByLocationSearchComponent, canActivate: [AuthGuard] },
   { path: 'by-skill-search', component: BySkillSearchComponent, canActivate: [AuthGuard] },
-  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({
